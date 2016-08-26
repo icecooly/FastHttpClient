@@ -9,12 +9,14 @@ powered by icecooly(icecooly.du@gmail.com).
 Usage
 ==============
 1.synchronized get
+```java
 HttpClient.get().
 		url(url).
 		addParams("userName", "icecool").
 		addParams("password", "111111").
 		build().
 		executeSync();
+```
 		
 2.synchronized post
 HttpClient.post().
