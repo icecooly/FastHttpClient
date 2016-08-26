@@ -1,6 +1,5 @@
 # okhttpclient
 简易封装OkHttp
-Use Age
 
 OKHttpClient
 ======
