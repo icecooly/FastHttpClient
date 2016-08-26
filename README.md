@@ -19,14 +19,17 @@ HttpClient.get().
 ```
 		
 2.synchronized post
+```java
 HttpClient.post().
 		url(url).
 		addParams("userName", "icecool").
 		addParams("password", "111111").
 		build().
 		executeSync();
+```
 
 3.asynchronized get
+```java
 HttpClient.get().
 			url(url).
 			addParams("userName","icecool").
@@ -46,8 +49,10 @@ HttpClient.get().
 				}
 			}
 		});
+```
 		
 4.post file
+```java
 response=HttpClient.post().
 				url(url).
 				addFile("file1","a.txt","123").
@@ -56,3 +61,5 @@ response=HttpClient.post().
 				connTimeOut(1000).
 				executeSync();
 System.out.println(response.body().string());
+```
+
