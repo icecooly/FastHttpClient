@@ -22,7 +22,7 @@ public class QQMapService {
 		String url="http://apis.map.qq.com/ws/place/v1/suggestion?keyword="+keyword+
 				"&key="+key;
 		try {
-			Response response=HttpClient.get().url(url).build().executeSync();
+			Response response=HttpClient.get().url(url).build().execute();
 			if(response.code()!=200){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}

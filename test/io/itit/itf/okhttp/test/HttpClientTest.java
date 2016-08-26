@@ -27,7 +27,7 @@ public class HttpClientTest {
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
 				build()
-				.executeSync();
+				.execute();
 		System.out.println(response.body().string());
 
 		// 2.post
@@ -35,7 +35,7 @@ public class HttpClientTest {
 				addParams("para1", "123456").
 				addParams("para2", "测试").
 				build().
-				executeSync();
+				execute();
 		System.out.println(response.body().string());
 
 		// 3.post normal file and image
@@ -45,7 +45,7 @@ public class HttpClientTest {
 				addFile("file2", "b.jpg", imageContent).
 				build()
 				.connTimeOut(10000).
-				executeSync();
+				execute();
 		System.out.println(response.body().string());
 
 		// 4.get async

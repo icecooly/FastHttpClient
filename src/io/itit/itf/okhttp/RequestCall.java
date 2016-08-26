@@ -68,7 +68,7 @@ public class RequestCall {
 		return okHttpRequest.createRequest(callback);
 	}
 	
-	public Response executeSync() throws IOException {
+	public Response execute() throws IOException {
 		buildCall(null);
 		return call.execute();
 	}

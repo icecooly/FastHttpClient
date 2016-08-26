@@ -14,7 +14,7 @@ HttpClient.get().
 		addParams("userName", "icecool").
 		addParams("password", "111111").
 		build().
-		executeSync();
+		execute();
 ```
 		
 2.synchronized post
@@ -24,7 +24,7 @@ HttpClient.post().
 		addParams("userName", "icecool").
 		addParams("password", "111111").
 		build().
-		executeSync();
+		execute();
 ```
 
 3.asynchronized get
@@ -59,7 +59,7 @@ byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 				addFile("file2", "b.jpg", imageContent).
 				build().
 				connTimeOut(10000).
-				executeSync();
+				execute();
 System.out.println(response.body().string());
 ```
 
