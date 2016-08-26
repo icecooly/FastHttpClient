@@ -1,5 +1,5 @@
 # okhttpclient
-简易封装OkHttp
+简易封装OkHttp(jdk8以上)
 
 OKHttpClient
 ======
