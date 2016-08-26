@@ -52,12 +52,13 @@ HttpClient.get().
 		
 4.post file
 ```java
-response=HttpClient.post().
+byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
+		response = HttpClient.post().
 				url(url).
-				addFile("file1","a.txt","123").
-				addFile("file2","b.jpg","456").
+				addFile("file1", "a.txt", "123").
+				addFile("file2", "b.jpg", imageContent).
 				build().
-				connTimeOut(1000).
+				connTimeOut(10000).
 				executeSync();
 System.out.println(response.body().string());
 ```

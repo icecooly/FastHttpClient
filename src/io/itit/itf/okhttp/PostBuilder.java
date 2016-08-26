@@ -1,6 +1,7 @@
 package io.itit.itf.okhttp;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,11 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	
 	public PostBuilder addFile(String partName,String fileName,String content) 
 	throws UnsupportedEncodingException{
-		return addFile(partName, fileName, content.getBytes("UTF-8"));
+		return addFile(partName, fileName, content,StandardCharsets.UTF_8.toString());
+	}
+	
+	public PostBuilder addFile(String partName,String fileName,String content,String charsetName) 
+	throws UnsupportedEncodingException{
+		return addFile(partName, fileName, content.getBytes(charsetName));
 	}
 }

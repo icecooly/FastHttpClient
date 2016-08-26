@@ -38,18 +38,22 @@ public class HttpClientTest {
 				executeSync();
 		System.out.println(response.body().string());
 
-		// 3.post file
+		// 3.post normal file and image
+		byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 		response = HttpClient.post().url(url).
 				addFile("file1", "a.txt", "123").
-				addFile("file2", "b.jpg", "456").build()
-				.connTimeOut(1000).executeSync();
+				addFile("file2", "b.jpg", imageContent).
+				build()
+				.connTimeOut(10000).
+				executeSync();
 		System.out.println(response.body().string());
 
 		// 4.get async
 		HttpClient.get().url(url).
 			addParams("userName", "icecool").
-			addParams("password", "111111").build()
-				.executeAsync(new Callback() {
+			addParams("password", "111111").
+			build()
+			.executeAsync(new Callback() {
 					@Override
 					public void onFailure(Call call, Exception e, int id) {
 						// TODO
