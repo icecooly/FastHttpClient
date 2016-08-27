@@ -1,12 +1,10 @@
 package io.itit.itf.okhttp.test;
 
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import io.itit.itf.okhttp.Callback;
 import io.itit.itf.okhttp.HttpClient;
 import okhttp3.Call;
-import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
@@ -17,15 +15,17 @@ import okhttp3.Response;
 public class HttpClientTest {
 	//
 	public static void main(String[] args) throws IOException {
-		OkHttpClient okHttpClient = new OkHttpClient.Builder().connectTimeout(10000L, TimeUnit.MILLISECONDS)
-				.readTimeout(10000L, TimeUnit.MILLISECONDS).build();
-		HttpClient.okHttpClient = okHttpClient;
 		String url = "http://localhost:7002/p/api/test";
 		Response response = null;
 		// 1.get
 		response = HttpClient.get().url(url).
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
+				build()
+				.execute();
+		System.out.println(response.body().string());
+		
+		response = HttpClient.get().url("https://kyfw.12306.cn/otn/").
 				build()
 				.execute();
 		System.out.println(response.body().string());
