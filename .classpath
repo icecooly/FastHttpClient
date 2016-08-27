@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/okhttp-3.4.1.jar" sourcepath="/Users/icecooly/.m2/repository/com/squareup/okhttp3/okhttp/3.4.1/okhttp-3.4.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/okio-1.9.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

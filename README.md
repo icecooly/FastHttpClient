@@ -49,8 +49,55 @@ HttpClient.get().
 			}
 		});
 ```
-		
-4.post file
+
+4.asynchronized post
+```java
+HttpClient.post().
+			url(url).
+			addParams("userName","icecool").
+			addParams("password", "111111").
+			build().
+			executeAsync(new Callback() {
+			@Override
+			public void onFailure(Call call, Exception e, int id) {
+				//TODO
+			}
+
+			@Override
+			public void onResponse(Call call,Response response, int id) {
+				try {
+					System.out.println(response.body().string());
+				} catch (IOException e) {
+				}
+			}
+		});
+```
+
+5.download file aynsc
+```java
+HttpClient.get().
+		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
+		build().
+		executeAsync(new Callback() {
+				@Override
+				public void onFailure(Call call, Exception e, int id) {
+					e.printStackTrace();
+				}
+				@Override
+				public void onResponse(Call call, Response response, int id) {
+					try {
+						FileUtil.saveContent(response.body().bytes(),new File("/tmp/tmp.jpg"));
+						System.out.println("save file success");
+						System.exit(0);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+		});
+Thread.sleep(50000);
+```
+
+6.upload file
 ```java
 byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 		response = HttpClient.post().
@@ -62,4 +109,19 @@ byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 				execute();
 System.out.println(response.body().string());
 ```
-5.https TODO
+
+7.https get
+```java
+Response response = HttpClient.get().url("https://kyfw.12306.cn/otn/").
+				build()
+				.execute();
+System.out.println(response.body().string());
+```
+
+8.https post
+```java
+Response response = HttpClient.post().url("https://kyfw.12306.cn/otn/").
+				build()
+				.execute();
+System.out.println(response.body().string());
+```
