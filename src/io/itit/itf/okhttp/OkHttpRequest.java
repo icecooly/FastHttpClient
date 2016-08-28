@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.itit.itf.okhttp.PostRequest.FileInfo;
+import io.itit.itf.okhttp.callback.Callback;
 import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;

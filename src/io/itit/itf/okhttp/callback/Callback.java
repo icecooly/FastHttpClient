@@ -1,4 +1,4 @@
-package io.itit.itf.okhttp;
+package io.itit.itf.okhttp.callback;
 
 import okhttp3.Call;
 import okhttp3.Response;

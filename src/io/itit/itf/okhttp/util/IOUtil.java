@@ -1,4 +1,4 @@
-package io.itit.itf.okhttp.test;
+package io.itit.itf.okhttp.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

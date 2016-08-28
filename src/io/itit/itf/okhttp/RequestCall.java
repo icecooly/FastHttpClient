@@ -1,9 +1,13 @@
 package io.itit.itf.okhttp;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.itit.itf.okhttp.callback.Callback;
 import okhttp3.Call;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -23,8 +27,11 @@ public class RequestCall {
 	private long writeTimeOut;
 	private long connTimeOut;
 	//
+	protected List<Interceptor> networkInterceptors;
+	//
 	public RequestCall(OkHttpRequest request) {
 		this.okHttpRequest = request;
+		this.networkInterceptors=new ArrayList<>();
 	}
 
 	public RequestCall readTimeOut(long readTimeOut) {
@@ -41,11 +48,15 @@ public class RequestCall {
 		this.connTimeOut = connTimeOut;
 		return this;
 	}
+	
+	public RequestCall addNetworkInterceptor(Interceptor networkInterceptor){
+		networkInterceptors.add(networkInterceptor);
+		return this;
+	}
 
 	public Call buildCall(Callback callback) {
-		request=createRequest(callback);
-		//
-		if (readTimeOut > 0 || writeTimeOut > 0 || connTimeOut > 0) {
+		OkHttpClient client=HttpClient.okHttpClient;
+		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||networkInterceptors.size()>0) {
 			OkHttpClient.Builder builder=HttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -56,11 +67,15 @@ public class RequestCall {
 			if(writeTimeOut>0){
 				builder.readTimeout(writeTimeOut, TimeUnit.MILLISECONDS);
 			}
-			OkHttpClient okHttpClient = builder.build();
-			call = okHttpClient.newCall(request);
-		} else {
-			call = HttpClient.okHttpClient.newCall(request);
+			networkInterceptors.forEach(i->builder.addNetworkInterceptor(i));
+			client=builder.build();
 		}
+		return buildCall(callback,client);
+	}
+	
+	public Call buildCall(Callback callback,OkHttpClient okHttpClient) {
+		request=createRequest(callback);
+		call = okHttpClient.newCall(request);
 		return call;
 	}
 
@@ -75,6 +90,16 @@ public class RequestCall {
 
 	public void executeAsync(Callback callback) {
 		buildCall(callback);
+		execute(this,callback);
+	}
+	
+	public Response execute(OkHttpClient client) throws IOException {
+		buildCall(null,client);
+		return call.execute();
+	}
+
+	public void executeAsync(Callback callback,OkHttpClient client) {
+		buildCall(callback,client);
 		execute(this,callback);
 	}
 
