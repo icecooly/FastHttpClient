@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.util.FileUtil;
 import okhttp3.Call;
@@ -18,7 +18,7 @@ import okhttp3.Response;
  */
 public abstract class DownloadFileCallback extends Callback{
 	//
-	public static Log log = LogFactory.getLog(DownloadFileCallback.class);
+	public static Logger logger = LoggerFactory.getLogger(DownloadFileCallback.class);
 	//
 	private String fileAbsolutePath;
 	//
@@ -40,7 +40,7 @@ public abstract class DownloadFileCallback extends Callback{
 				onSuccess(call,response.body().byteStream(),id);
 			}
 		} catch (IOException e) {
-			log.error(e.getMessage(),e);
+			logger.error(e.getMessage(),e);
 		}
 	}
 	//

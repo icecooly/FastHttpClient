@@ -22,11 +22,17 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ * @author icecooly
+ *
+ */
 public class FileUtil {
-	private static Log logger = LogFactory.getLog(FileUtil.class);
+	//
+	private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+	//
 	private static final int BUFFER = 2048;
 
 	private FileUtil() {
@@ -256,9 +262,8 @@ public class FileUtil {
 				}
 			});
 		} catch (Exception e) {
-			logger.error(e);
+			logger.error(e.getMessage(),e);
 		}
-
 		return size.get();
 	}
 }

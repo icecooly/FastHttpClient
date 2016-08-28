@@ -11,8 +11,8 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import okhttp3.OkHttpClient;
 
@@ -23,7 +23,7 @@ import okhttp3.OkHttpClient;
  */
 public class HttpClient {
 	//
-	public static Log log = LogFactory.getLog(HttpClient.class);
+	public static Logger logger = LoggerFactory.getLogger(HttpClient.class);
 	//
 	public static OkHttpClient okHttpClient=getDefaultOkHttpClient();
 	//
@@ -49,7 +49,7 @@ public class HttpClient {
 			sslContext.init(null, new TrustManager[] { trustManager }, new SecureRandom());
 			sslSocketFactory = sslContext.getSocketFactory();
 		} catch (Exception e) {
-			log.error(e.getMessage(),e);
+			logger.error(e.getMessage(),e);
 		}
 		return builder.sslSocketFactory(sslSocketFactory, trustManager).hostnameVerifier(new HostnameVerifier() {
 			@Override

@@ -7,8 +7,8 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import okhttp3.FormBody;
 import okhttp3.Headers;
@@ -24,7 +24,7 @@ import okhttp3.RequestBody;
  */
 public class PostRequest extends OkHttpRequest {
 	//
-	public static Log log = LogFactory.getLog(PostRequest.class);
+	public static Logger logger = LoggerFactory.getLogger(PostRequest.class);
 	//
 	public PostRequest(String url, Object tag, Map<String, String> params, 
 			Map<String, String> headers,List<FileInfo> fileInfos, int id) {
@@ -83,7 +83,7 @@ public class PostRequest extends OkHttpRequest {
 		try {
 			contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			log.error(e.getMessage(),e);
+			logger.error(e.getMessage(),e);
 		}
 		if (contentTypeFor == null) {
 			contentTypeFor = "application/octet-stream";

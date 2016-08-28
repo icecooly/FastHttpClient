@@ -2,6 +2,9 @@ package io.itit.itf.okhttp.test;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.itit.itf.okhttp.HttpClient;
 import okhttp3.Response;
 
@@ -11,6 +14,8 @@ import okhttp3.Response;
  *
  */
 public class QQMapService {
+	//
+	static Logger logger=LoggerFactory.getLogger(QQMapService.class);
 	//
 	String key;
 	
@@ -26,9 +31,9 @@ public class QQMapService {
 			if(response.code()!=200){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}
-			System.out.println(response.body().string());
+			logger.info(response.body().string());
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage(),e);
 		}
 	}
 	//

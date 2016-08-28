@@ -27,8 +27,8 @@ import java.util.zip.Inflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -36,7 +36,7 @@ import org.apache.commons.logging.LogFactory;
  *
  */
 public class IOUtil {
-	private static Log logger = LogFactory.getLog(IOUtil.class);
+	private static Logger logger = LoggerFactory.getLogger(IOUtil.class);
 	private static final int CACHE_SIZE = 512;
 
 	//
