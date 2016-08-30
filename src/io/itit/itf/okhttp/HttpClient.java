@@ -1,8 +1,6 @@
 package io.itit.itf.okhttp;
 
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -14,6 +12,7 @@ import javax.net.ssl.X509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -29,20 +28,7 @@ public class HttpClient {
 	//
 	public static OkHttpClient getDefaultOkHttpClient() {
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-		final X509TrustManager trustManager = new X509TrustManager() {
-			@Override
-			public void checkClientTrusted(X509Certificate[] chain, String authType)
-			throws CertificateException {
-			}
-			@Override
-			public void checkServerTrusted(X509Certificate[] chain, String authType) 
-			throws CertificateException {
-			}
-			@Override
-			public X509Certificate[] getAcceptedIssuers() {
-				return new X509Certificate[0];
-			}
-		};
+		final X509TrustManager trustManager=new X509TrustManagerImpl();
 		SSLSocketFactory sslSocketFactory=null;
 		try {
 			SSLContext sslContext = SSLContext.getInstance("SSL");

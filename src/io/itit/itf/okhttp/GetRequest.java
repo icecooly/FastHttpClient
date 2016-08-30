@@ -14,7 +14,7 @@ public class GetRequest extends OkHttpRequest {
 	//
 	public GetRequest(String url, Object tag, Map<String, String> params, 
 			Map<String, String> headers, int id) {
-		super(url, tag, params, headers, null,id);
+		super(url,tag,params,headers,null,null,id);
 	}
 
 	@Override

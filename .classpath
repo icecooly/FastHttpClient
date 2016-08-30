@@ -11,6 +11,7 @@
 	<classpathentry kind="lib" path="lib/okio-1.9.0.jar" sourcepath="/Users/icecooly/.m2/repository/com/squareup/okio/okio/1.9.0/okio-1.9.0-sources.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.21.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.21.jar"/>
+	<classpathentry kind="lib" path="release/okhttpclient-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

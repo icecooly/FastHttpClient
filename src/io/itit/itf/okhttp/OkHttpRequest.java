@@ -19,15 +19,17 @@ public abstract class OkHttpRequest {
 	protected String url;
 	protected Map<String, String> params;
 	protected Map<String, String> headers;
+	protected String postBody;
 	protected List<FileInfo> fileInfos;
 	protected Request.Builder builder = new Request.Builder();
 	//
 	protected OkHttpRequest(String url, Object tag, Map<String, String> params,
-			Map<String, String> headers,List<FileInfo> fileInfos,int id) {
+			Map<String, String> headers,List<FileInfo> fileInfos,String postBody,int id) {
 		this.url = url;
 		this.params = params;
 		this.headers = headers;
 		this.fileInfos=fileInfos;
+		this.postBody=postBody;
 		this.id = id;
 		if (url==null) {
 			throw new IllegalArgumentException("url can not be null.");

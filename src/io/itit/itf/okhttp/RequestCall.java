@@ -1,11 +1,24 @@
 package io.itit.itf.okhttp;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.itit.itf.okhttp.callback.Callback;
+import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -19,6 +32,8 @@ import okhttp3.Response;
  */
 public class RequestCall {
 	//
+	private static Logger logger=LoggerFactory.getLogger(RequestCall.class);
+	//
 	private OkHttpRequest okHttpRequest;
 	private Request request;
 	private Call call;
@@ -28,6 +43,7 @@ public class RequestCall {
 	private long connTimeOut;
 	//
 	protected List<Interceptor> networkInterceptors;
+	protected KeyManager[] keyManagers;
 	//
 	public RequestCall(OkHttpRequest request) {
 		this.okHttpRequest = request;
@@ -53,10 +69,34 @@ public class RequestCall {
 		networkInterceptors.add(networkInterceptor);
 		return this;
 	}
+	
+	public RequestCall keyManagers(KeyManager[] keyManagers){
+		this.keyManagers=keyManagers;
+		return this;
+	}
 
+	private void setSSLSocketFactory(OkHttpClient.Builder builder,KeyManager[] kms) {
+		SSLSocketFactory sslSocketFactory=null;
+		final X509TrustManager trustManager=new X509TrustManagerImpl();
+		try {
+			SSLContext sslContext = SSLContext.getInstance("SSL");
+			sslContext.init(kms,new TrustManager[] { trustManager },new SecureRandom());
+			sslSocketFactory = sslContext.getSocketFactory();
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		builder.sslSocketFactory(sslSocketFactory, trustManager).hostnameVerifier(new HostnameVerifier() {
+			@Override
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		});
+	}
+	
 	public Call buildCall(Callback callback) {
 		OkHttpClient client=HttpClient.okHttpClient;
-		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||networkInterceptors.size()>0) {
+		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
+				networkInterceptors.size()>0||keyManagers!=null) {
 			OkHttpClient.Builder builder=HttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -68,6 +108,9 @@ public class RequestCall {
 				builder.readTimeout(writeTimeOut, TimeUnit.MILLISECONDS);
 			}
 			networkInterceptors.forEach(i->builder.addNetworkInterceptor(i));
+			if(keyManagers!=null){
+				setSSLSocketFactory(builder,keyManagers);
+			}
 			client=builder.build();
 		}
 		return buildCall(callback,client);

@@ -16,6 +16,7 @@ import io.itit.itf.okhttp.PostRequest.FileInfo;
 public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 
 	private List<FileInfo> fileInfos;
+	private String postBody;
 	//
 	public PostBuilder(){
 		fileInfos=new ArrayList<>();
@@ -23,7 +24,7 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	
 	@Override
 	public RequestCall build() {
-		return new PostRequest(url,tag, params,headers,fileInfos, id).build();
+		return new PostRequest(url,tag, params,headers,fileInfos,postBody,id).build();
 	}
 
 	public PostBuilder params(Map<String, String> params) {
@@ -38,6 +39,11 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	
 	public PostBuilder addParams(Map<String,String> paramMap) {
 		paramMap.forEach((k,v)->{params.put(k, v);});
+		return this;
+	}
+	
+	public PostBuilder body(String postBody) {
+		this.postBody = postBody;
 		return this;
 	}
 	

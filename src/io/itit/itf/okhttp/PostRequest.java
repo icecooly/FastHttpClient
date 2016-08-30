@@ -27,18 +27,23 @@ public class PostRequest extends OkHttpRequest {
 	public static Logger logger = LoggerFactory.getLogger(PostRequest.class);
 	//
 	public PostRequest(String url, Object tag, Map<String, String> params, 
-			Map<String, String> headers,List<FileInfo> fileInfos, int id) {
-		super(url, tag, params, headers, fileInfos, id);
+			Map<String, String> headers,List<FileInfo> fileInfos,String postBody,int id) {
+		super(url, tag, params, headers, fileInfos,postBody,id);
 	}
 
 	@Override
 	protected RequestBody buildRequestBody() {
-		if (fileInfos == null || fileInfos.isEmpty()) {
+		if(postBody!=null&&postBody.length()>0){
+			MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain;charset=utf-8");
+			return RequestBody.create(MEDIA_TYPE_PLAIN,postBody);
+		}
+		else if (fileInfos == null || fileInfos.isEmpty()) {
 			FormBody.Builder builder = new FormBody.Builder();
 			addParams(builder);
 			FormBody formBody = builder.build();
 			return formBody;
-		} else {
+		} else{
+			System.err.println("buildRequestBody3");
 			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 			addParams(builder);
 			fileInfos.forEach(fileInfo -> {
