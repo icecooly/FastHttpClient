@@ -86,26 +86,52 @@
 		</jar>
 	</target>
 	
-	<target name="make-jar" depends="clean,build">
-			<mkdir dir="${build.dir}" />
-			<unzip dest="${build.dir}">
+	<target name="make-jar" description="make jar file" depends="build">
+			<copy todir="${build.classes.dir}">
+					<fileset dir="${src.dir}/" >
+						<include name="**/*.png"/>
+						<include name="**/*.jpg"/>
+					</fileset>
+			</copy>		
+			<jar destfile="${release.dir}/single.jar">
+				<fileset dir="${build.classes.dir}">
+					<include name="**/**"/>
+				</fileset>
+				<manifest>
+					<attribute name="Version" value="${project.revision}"/>
+					<attribute name="Implementation-Version" 
+						value="${project.revision}-build${release_date}"/>
+					<attribute name="Implementation-Title" 
+						value="OKHttpClient"/>			
+				</manifest>
+			</jar>		
+			<echo>make all jars into one jar</echo>
+			<delete dir="${release.dir}/${project.name}/tmp" />
+			<mkdir dir="${release.dir}/${project.name}/tmp" />
+			<unzip dest="${release.dir}/${project.name}/tmp">
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
 				</fileset>
+				<fileset dir="${release.dir}">
+					<include name="**/*.jar"/>
+				</fileset>			
 			</unzip>
+			<delete>  
+			    <fileset dir="${release.dir}/${project.name}/tmp/META-INF/" includes="**/*.SF"/>          
+			</delete>
 			<jar destfile="${release.dir}/okhttpclient-1.0.jar">
 				<manifest>
-						<attribute name="Version" value="${project.version}"/>
+						<attribute name="Version" value="${project.revision}"/>
 						<attribute name="Implementation-Version" 
-							value="${project.version}-build${release_date}"/>
+							value="${project.revision}-build${release_date}"/>
 						<attribute name="Implementation-Title" 
-							value="vaadin"/>			
+							value="OKHttpClient"/>			
 				</manifest>	
-				<fileset dir="${build.dir}">
+				<fileset dir="${release.dir}/${project.name}/tmp">
 					<include name="**/*" />
 				</fileset>
-			</jar>
-			<delete dir="${build.dir}" />
+			</jar>	
+			<delete dir="${release.dir}/${project.name}/tmp" />
+			<delete file="${release.dir}/single.jar"/>
 		</target>
-	
 </project>
