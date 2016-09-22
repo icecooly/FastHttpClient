@@ -38,6 +38,9 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	}
 	
 	public PostBuilder addParams(Map<String,String> paramMap) {
+		if(paramMap==null){
+			return this;
+		}
 		paramMap.forEach((k,v)->{params.put(k, v);});
 		return this;
 	}
