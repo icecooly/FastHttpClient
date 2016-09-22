@@ -43,7 +43,6 @@ public class PostRequest extends OkHttpRequest {
 			FormBody formBody = builder.build();
 			return formBody;
 		} else{
-			System.err.println("buildRequestBody3");
 			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 			addParams(builder);
 			fileInfos.forEach(fileInfo -> {
