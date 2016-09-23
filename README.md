@@ -1,5 +1,5 @@
 # FastHttpClient
-简易封装OkHttp(jdk8以上)
+封装OkHttp(jdk8以上)
 
 ======
 powered by icecooly(icecooly.du@gmail.com).
