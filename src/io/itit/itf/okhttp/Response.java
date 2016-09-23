@@ -1,6 +1,7 @@
 package io.itit.itf.okhttp;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import okhttp3.Handshake;
@@ -121,4 +122,12 @@ public class Response {
 	public final String string(String charset) throws IOException {
 		return new String(body().bytes(),charset);
 	}
+	//
+	public final byte[] bytes() throws IOException {
+		return body().bytes();
+	}
+	//
+	public final InputStream byteStream() {
+	    return body().source().inputStream();
+	  }
 }

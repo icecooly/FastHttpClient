@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class HttpClientTestCase extends TestCase{
 				addParams("para2", "测试").
 				build().
 				execute();
-		logger.info(response.body().string());
+		logger.info(response.string());
 	}
 	//
 	public void testGetAsync() throws InterruptedException{
