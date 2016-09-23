@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.HttpClient;
+import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.Callback;
 import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
@@ -16,7 +18,6 @@ import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
 import io.itit.itf.okhttp.util.FileUtil;
 import junit.framework.TestCase;
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 
@@ -30,12 +31,12 @@ public class HttpClientTestCase extends TestCase{
 	private static String url = "http://localhost:7002/p/api/test";
 	//
 	public void testGetSync() throws IOException{
-		Response response = HttpClient.get().url(url).
+		Response response = HttpClient.get().url("http://sz.bendibao.com/news/2016923/781534.htm").
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
-				build()
-				.execute();
-		logger.info(response.body().string());
+				build().
+				execute();
+		logger.info(response.string("gb2312"));
 	}
 	//
 	public void testPostSync() throws IOException{
@@ -76,7 +77,7 @@ public class HttpClientTestCase extends TestCase{
 					logger.error(e.getMessage(),e);
 				}
 				@Override
-				public void onResponse(Call call, Response response, int id) {
+				public void onResponse(Call call, okhttp3.Response response, int id) {
 					try {
 						logger.info(response.body().string());
 					} catch (IOException e) {
@@ -127,15 +128,15 @@ public class HttpClientTestCase extends TestCase{
 	//
 	public void testHttpsGet() throws IOException{
 		Response response = HttpClient.get().url("https://kyfw.12306.cn/otn/").
-				build()
-				.execute();
+				build().
+				execute();
 		logger.info(response.body().string());
 	}
 	//
 	public void testHttpsPost() throws IOException{
 		Response response = HttpClient.post().url("https://kyfw.12306.cn/otn/").
-				build()
-				.execute();
+				build().
+				execute();
 		logger.info(response.body().string());
 	}
 	//

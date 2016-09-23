@@ -20,7 +20,6 @@ import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * 
@@ -124,7 +123,7 @@ public class RequestCall {
 	
 	public Response execute() throws IOException {
 		buildCall(null);
-		return call.execute();
+		return new Response(call.execute());
 	}
 
 	public void executeAsync(Callback callback) {
@@ -134,7 +133,7 @@ public class RequestCall {
 	
 	public Response execute(OkHttpClient client) throws IOException {
 		buildCall(null,client);
-		return call.execute();
+		return new Response(call.execute());
 	}
 
 	public void executeAsync(Callback callback,OkHttpClient client) {
@@ -153,7 +152,7 @@ public class RequestCall {
 				}
 			}
 			@Override
-			public void onResponse(final Call call, final Response response) {
+			public void onResponse(final Call call, final okhttp3.Response response) {
 				if(finalCallback!=null){
 					finalCallback.onResponse(call,response,id);
 				}

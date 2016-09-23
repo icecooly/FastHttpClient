@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.HttpClient;
-import okhttp3.Response;
+import io.itit.itf.okhttp.Response;
 
 /**
  * http://lbs.qq.com/webservice_v1/guide-gcoder.html
