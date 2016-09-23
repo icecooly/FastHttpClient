@@ -20,9 +20,9 @@ import okhttp3.OkHttpClient;
  * @author icecooly
  *
  */
-public class HttpClient {
+public class FastHttpClient {
 	//
-	public static Logger logger = LoggerFactory.getLogger(HttpClient.class);
+	public static Logger logger = LoggerFactory.getLogger(FastHttpClient.class);
 	//
 	public static OkHttpClient okHttpClient=getDefaultOkHttpClient();
 	//

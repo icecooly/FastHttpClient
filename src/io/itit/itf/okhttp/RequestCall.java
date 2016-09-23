@@ -89,10 +89,10 @@ public class RequestCall {
 	}
 	
 	public Call buildCall(Callback callback) {
-		OkHttpClient client=HttpClient.okHttpClient;
+		OkHttpClient client=FastHttpClient.okHttpClient;
 		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
 				networkInterceptors.size()>0||sslContext!=null) {
-			OkHttpClient.Builder builder=HttpClient.okHttpClient.newBuilder();
+			OkHttpClient.Builder builder=FastHttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
 			}

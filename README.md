@@ -1,7 +1,7 @@
-# okhttpclient
+# FastHttpClient
 简易封装OkHttp(jdk8以上)
 
-OKHttpClient
+FastHttpClient
 ======
 powered by icecooly(icecooly.du@gmail.com).
 
@@ -9,7 +9,7 @@ Usage
 ==============
 1.synchronized get
 ```java
-HttpClient.get().
+FastHttpClient.get().
 		url(url).
 		addParams("userName", "icecool").
 		addParams("password", "111111").
@@ -19,7 +19,7 @@ HttpClient.get().
 		
 2.synchronized post
 ```java
-HttpClient.post().
+FastHttpClient.post().
 		url(url).
 		addParams("userName", "icecool").
 		addParams("password", "111111").
@@ -29,7 +29,7 @@ HttpClient.post().
 
 3.asynchronized get
 ```java
-HttpClient.get().
+FastHttpClient.get().
 			url(url).
 			addParams("userName","icecool").
 			addParams("password", "111111").
@@ -52,7 +52,7 @@ HttpClient.get().
 
 4.asynchronized post
 ```java
-HttpClient.post().
+FastHttpClient.post().
 			url(url).
 			addParams("userName","icecool").
 			addParams("password", "111111").
@@ -75,7 +75,7 @@ HttpClient.post().
 
 5.download file aynsc
 ```java
-HttpClient.get().
+FastHttpClient.get().
 		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
 		build().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
@@ -105,7 +105,7 @@ Thread.sleep(50000);
 6.upload file
 ```java
 byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
-		response = HttpClient.post().
+		response = FastHttpClient.post().
 				url(url).
 				addFile("file1", "a.txt", "123").
 				addFile("file2", "b.jpg", imageContent).
@@ -117,7 +117,7 @@ System.out.println(response.body().string());
 
 7.https get
 ```java
-Response response = HttpClient.get().url("https://kyfw.12306.cn/otn/").
+Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
 				build()
 				.execute();
 System.out.println(response.body().string());
@@ -125,7 +125,7 @@ System.out.println(response.body().string());
 
 8.https post
 ```java
-Response response = HttpClient.post().url("https://kyfw.12306.cn/otn/").
+Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				build()
 				.execute();
 System.out.println(response.body().string());

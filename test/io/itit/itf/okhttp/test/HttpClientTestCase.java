@@ -8,7 +8,7 @@ import java.io.UnsupportedEncodingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.itit.itf.okhttp.HttpClient;
+import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.Callback;
 import io.itit.itf.okhttp.callback.DownloadFileCallback;
@@ -30,7 +30,7 @@ public class HttpClientTestCase extends TestCase{
 	private static String url = "http://localhost:7002/p/api/test";
 	//
 	public void testGetSync() throws IOException{
-		Response response = HttpClient.get().url("http://sz.bendibao.com/news/2016923/781534.htm").
+		Response response = FastHttpClient.get().url("http://sz.bendibao.com/news/2016923/781534.htm").
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
 				build().
@@ -39,7 +39,7 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testPostSync() throws IOException{
-		Response response = HttpClient.post().url(url).
+		Response response = FastHttpClient.post().url(url).
 				addParams("para1", "123456").
 				addParams("para2", "测试").
 				build().
@@ -48,7 +48,7 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testGetAsync() throws InterruptedException{
-		HttpClient.get().url(url).
+		FastHttpClient.get().url(url).
 		addParams("para1", "icecool").
 		addParams("para2", "111111").
 		build().
@@ -66,7 +66,7 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testPostAsync() throws InterruptedException{
-		HttpClient.post().url(url).
+		FastHttpClient.post().url(url).
 		addParams("para1", "icecool").
 		addParams("para2", "测试中文").
 		build().
@@ -89,7 +89,7 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testDownloadFile() throws InterruptedException{
-		HttpClient.get().
+		FastHttpClient.get().
 		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
 		build().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
@@ -117,7 +117,7 @@ public class HttpClientTestCase extends TestCase{
 	//
 	public void testUploadFile() throws UnsupportedEncodingException, IOException{
 		byte[] imageContent=FileUtil.getBytes("/tmp/tmp.jpg");
-		Response response = HttpClient.post().url(url).
+		Response response = FastHttpClient.post().url(url).
 				addFile("file1", "a.txt", "123").
 				addFile("file2", "b.jpg", imageContent).
 				build().connTimeOut(10000).
@@ -126,14 +126,14 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testHttpsGet() throws IOException{
-		Response response = HttpClient.get().url("https://kyfw.12306.cn/otn/").
+		Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();
 		logger.info(response.body().string());
 	}
 	//
 	public void testHttpsPost() throws IOException{
-		Response response = HttpClient.post().url("https://kyfw.12306.cn/otn/").
+		Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();
 		logger.info(response.body().string());

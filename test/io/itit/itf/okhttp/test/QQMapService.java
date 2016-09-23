@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.itit.itf.okhttp.HttpClient;
+import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
 
 /**
@@ -27,7 +27,7 @@ public class QQMapService {
 		String url="http://apis.map.qq.com/ws/place/v1/suggestion?keyword="+keyword+
 				"&key="+key;
 		try {
-			Response response=HttpClient.get().url(url).build().execute();
+			Response response=FastHttpClient.get().url(url).build().execute();
 			if(response.code()!=200){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}
