@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project name="OKHttpClient" basedir="." 
+<project name="FastHttpClient" basedir="." 
 	xmlns:ivy="antlib:fr.jayasoft.ivy.ant"
 	default="jar">
 	<!-- scp task-->   
@@ -119,13 +119,13 @@
 			<delete>  
 			    <fileset dir="${release.dir}/${project.name}/tmp/META-INF/" includes="**/*.SF"/>          
 			</delete>
-			<jar destfile="${release.dir}/okhttpclient-1.0.jar">
+			<jar destfile="${release.dir}/fasthttpclient-1.0.jar">
 				<manifest>
 						<attribute name="Version" value="${project.revision}"/>
 						<attribute name="Implementation-Version" 
 							value="${project.revision}-build${release_date}"/>
 						<attribute name="Implementation-Title" 
-							value="OKHttpClient"/>			
+							value="FastHttpClient"/>			
 				</manifest>	
 				<fileset dir="${release.dir}/${project.name}/tmp">
 					<include name="**/*" />
