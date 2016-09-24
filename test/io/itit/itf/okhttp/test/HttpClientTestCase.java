@@ -30,7 +30,21 @@ public class HttpClientTestCase extends TestCase{
 	private static String url = "http://localhost:7002/p/api/test";
 	//
 	public void testGetSync() throws IOException{
-		Response response = FastHttpClient.get().url("http://sz.bendibao.com/news/2016923/781534.htm").
+		Response response = FastHttpClient.get().
+				url("http://sz.bendibao.com/news/2016923/781534.htm").
+				addParams("para1", "icecool").
+				addParams("para2", "111111").
+				build().
+				execute();
+		logger.info(response.string("gb2312"));//default is utf_8
+	}
+	//
+	public void testGetSyncWithHeader() throws IOException{
+		String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; zh-CN; rv:1.9.2.11) "
+				+ "Gecko/20101012 Firefox/3.6.11";
+		Response response = FastHttpClient.get().
+				url("http://sz.bendibao.com/news/2016923/781534.htm").
+				addHeader("User-Agent", userAgent).
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
 				build().

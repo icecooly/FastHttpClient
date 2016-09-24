@@ -26,13 +26,13 @@ public class FastHttpClient {
 	//
 	public static OkHttpClient okHttpClient=getDefaultOkHttpClient();
 	//
-	public static OkHttpClient getDefaultOkHttpClient() {
+	private static OkHttpClient getDefaultOkHttpClient() {
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
 		final X509TrustManager trustManager=new X509TrustManagerImpl();
 		SSLSocketFactory sslSocketFactory=null;
 		try {
 			SSLContext sslContext = SSLContext.getInstance("SSL");
-			sslContext.init(null, new TrustManager[] { trustManager }, new SecureRandom());
+			sslContext.init(null, new TrustManager[] { trustManager },new SecureRandom());
 			sslSocketFactory = sslContext.getSocketFactory();
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
@@ -48,7 +48,6 @@ public class FastHttpClient {
 	public static GetBuilder get() {
 		return new GetBuilder();
 	}
-
 	//
 	public static PostBuilder post() {
 		return new PostBuilder();
