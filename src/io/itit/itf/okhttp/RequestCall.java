@@ -130,11 +130,6 @@ public class RequestCall {
 		buildCall(callback);
 		execute(this,callback);
 	}
-	
-	public Response execute(OkHttpClient client) throws IOException {
-		buildCall(null,client);
-		return new Response(call.execute());
-	}
 
 	public void executeAsync(Callback callback,OkHttpClient client) {
 		buildCall(callback,client);
