@@ -102,7 +102,7 @@
 					<attribute name="Implementation-Version" 
 						value="${project.revision}-build${release_date}"/>
 					<attribute name="Implementation-Title" 
-						value="OKHttpClient"/>			
+						value="FastHttpClient"/>			
 				</manifest>
 			</jar>		
 			<echo>make all jars into one jar</echo>
