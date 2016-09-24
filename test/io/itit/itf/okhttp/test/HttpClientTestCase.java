@@ -35,7 +35,7 @@ public class HttpClientTestCase extends TestCase{
 				addParams("para2", "111111").
 				build().
 				execute();
-		logger.info(response.string("gb2312"));
+		logger.info(response.string("gb2312"));//default is utf_8
 	}
 	//
 	public void testPostSync() throws IOException{
@@ -129,14 +129,14 @@ public class HttpClientTestCase extends TestCase{
 		Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();
-		logger.info(response.body().string());
+		logger.info(response.string());
 	}
 	//
 	public void testHttpsPost() throws IOException{
 		Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();
-		logger.info(response.body().string());
+		logger.info(response.string());
 	}
 	//
 }

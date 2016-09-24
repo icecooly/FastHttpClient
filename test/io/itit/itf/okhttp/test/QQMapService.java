@@ -28,10 +28,10 @@ public class QQMapService {
 				"&key="+key;
 		try {
 			Response response=FastHttpClient.get().url(url).build().execute();
-			if(response.code()!=200){
+			if(!response.isSuccessful()){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}
-			logger.info(response.body().string());
+			logger.info(response.string());
 		} catch (IOException e) {
 			logger.error(e.getMessage(),e);
 		}
