@@ -154,7 +154,7 @@ public class RequestCall {
 			@Override
 			public void onResponse(final Call call, final okhttp3.Response response) {
 				if(finalCallback!=null){
-					finalCallback.onResponse(call,response,id);
+					finalCallback.onResponse(call,new Response(response),id);
 				}
 			}
 		});

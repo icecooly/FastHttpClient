@@ -76,9 +76,9 @@ public class HttpClientTestCase extends TestCase{
 					logger.error(e.getMessage(),e);
 				}
 				@Override
-				public void onResponse(Call call, okhttp3.Response response, int id) {
+				public void onResponse(Call call, Response response, int id) {
 					try {
-						logger.info(response.body().string());
+						logger.info(response.string());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

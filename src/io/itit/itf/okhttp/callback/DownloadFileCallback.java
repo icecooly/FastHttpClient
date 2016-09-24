@@ -7,9 +7,9 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.util.FileUtil;
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 

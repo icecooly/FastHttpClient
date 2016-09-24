@@ -10,20 +10,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * 
  * @author icecooly
@@ -31,13 +22,10 @@ import org.slf4j.LoggerFactory;
  */
 public class FileUtil {
 	//
-	private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
-	//
 	private static final int BUFFER = 2048;
 
 	private FileUtil() {
 	}
-
 	//
 	public static void unzip(String file, String destFolder) throws IOException {
 		BufferedOutputStream dest = null;
@@ -191,79 +179,5 @@ public class FileUtil {
 				ByteArrayInputStream bis = new ByteArrayInputStream(bb)) {
 			IOUtil.copy(bis, fos);
 		}
-	}
-
-	//
-	public static void copyFileWithProgress(String sourceURI,
-			String destFilePath) {
-		try {
-			logger.info("move file from:" + sourceURI + " to " + destFilePath);
-			File destFile = new File(destFilePath);
-			URL url = new URL(sourceURI);
-			FileOutputStream fos = new FileOutputStream(destFile);
-			URLConnection connection = url.openConnection();
-			int total = connection.getContentLength();
-			logger.info("connection opened,content size:" + getSize(total));
-			InputStream is = connection.getInputStream();
-			byte[] buffer = new byte[4096];
-			int count = 0;
-			int n = 0;
-			int oldPercent = -1;
-			while (-1 != (n = is.read(buffer))) {
-				fos.write(buffer, 0, n);
-				count += n;
-				if (total > 0) {
-					int p = count * 10 / total;
-					if (p != oldPercent) {
-						logger.info("percent:" + p * 10 + "%,downloaded:"
-								+ getSize(count) + "/total:" + getSize(total));
-						oldPercent = p;
-					}
-				}
-			}
-			IOUtil.closeQuietly(is);
-			IOUtil.closeQuietly(fos);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
-
-	//
-	private static String getSize(int bytes) {
-		if (bytes > 1024) {
-			return bytes / (1024) + "KB";
-		}
-		return bytes + "b";
-	}
-
-	//
-	public static long sizeOfPath(Path path) {
-		final AtomicLong size = new AtomicLong(0);
-		try {
-			Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-				@Override
-				public FileVisitResult visitFile(Path file,
-						BasicFileAttributes attrs) {
-
-					size.addAndGet(attrs.size());
-					return FileVisitResult.CONTINUE;
-				}
-				//
-				@Override
-				public FileVisitResult visitFileFailed(Path file,
-						IOException exc) {
-					return FileVisitResult.CONTINUE;
-				}
-
-				@Override
-				public FileVisitResult postVisitDirectory(Path dir,
-						IOException exc) {
-					return FileVisitResult.CONTINUE;
-				}
-			});
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-		}
-		return size.get();
 	}
 }

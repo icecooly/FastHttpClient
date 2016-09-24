@@ -2,8 +2,8 @@ package io.itit.itf.okhttp.callback;
 
 import java.io.IOException;
 
+import io.itit.itf.okhttp.Response;
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * 
