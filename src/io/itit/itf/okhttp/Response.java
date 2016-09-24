@@ -17,7 +17,7 @@ import okhttp3.ResponseBody;
  */
 public class Response {
 	//
-	public okhttp3.Response response;
+	private okhttp3.Response response;
 	//
 	public Response(okhttp3.Response response){
 		this.response=response;
@@ -129,5 +129,10 @@ public class Response {
 	//
 	public final InputStream byteStream() {
 	    return body().source().inputStream();
-	  }
+	}
+	//
+	public okhttp3.Response getResponse(){
+		return response;
+	}
+	//
 }
