@@ -119,7 +119,7 @@
 			<delete>  
 			    <fileset dir="${release.dir}/${project.name}/tmp/META-INF/" includes="**/*.SF"/>          
 			</delete>
-			<jar destfile="${release.dir}/fasthttpclient-1.0.jar">
+			<jar destfile="${release.dir}/fasthttpclient-${project.version}.jar">
 				<manifest>
 						<attribute name="Version" value="${project.revision}"/>
 						<attribute name="Implementation-Version" 
@@ -132,6 +132,7 @@
 				</fileset>
 			</jar>	
 			<delete dir="${release.dir}/${project.name}/tmp" />
+			<delete dir="${release.dir}/${project.name}" />
 			<delete file="${release.dir}/single.jar"/>
 		</target>
 </project>
