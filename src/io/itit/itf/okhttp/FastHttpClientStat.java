@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class FastHttpClientStat {
 	//
-	private static final int MAX_ERROR_MSG_COUNT=1;
+	private static final int MAX_ERROR_MSG_COUNT=100;
 	//
 	private static boolean isStop=false;
 	//
