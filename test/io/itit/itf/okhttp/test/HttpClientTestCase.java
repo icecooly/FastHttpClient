@@ -3,7 +3,6 @@ package io.itit.itf.okhttp.test;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public class HttpClientTestCase extends TestCase{
 	//
 	private static String url = "http://localhost:7002/p/api/test";
 	//
-	public void testGetSync() throws IOException{
+	public void testGetSync() throws Exception{
 		Response response = FastHttpClient.get().
 				url("http://sz.bendibao.com/news/2016923/781534.htm").
 				addParams("para1", "icecool").
@@ -39,7 +38,7 @@ public class HttpClientTestCase extends TestCase{
 		logger.info(response.string("gb2312"));//default is utf_8
 	}
 	//
-	public void testGetSyncWithHeader() throws IOException{
+	public void testGetSyncWithHeader() throws Exception{
 		String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; zh-CN; rv:1.9.2.11) "
 				+ "Gecko/20101012 Firefox/3.6.11";
 		Response response = FastHttpClient.get().
@@ -52,7 +51,7 @@ public class HttpClientTestCase extends TestCase{
 		logger.info(response.string("gb2312"));//default is utf_8
 	}
 	//
-	public void testPostSync() throws IOException{
+	public void testPostSync() throws Exception{
 		Response response = FastHttpClient.post().url(url).
 				addParams("para1", "123456").
 				addParams("para2", "测试").
@@ -129,7 +128,7 @@ public class HttpClientTestCase extends TestCase{
 		Thread.sleep(50000);
 	}
 	//
-	public void testUploadFile() throws UnsupportedEncodingException, IOException{
+	public void testUploadFile() throws Exception{
 		byte[] imageContent=FileUtil.getBytes("/tmp/tmp.jpg");
 		Response response = FastHttpClient.post().url(url).
 				addFile("file1", "a.txt", "123").
@@ -139,14 +138,14 @@ public class HttpClientTestCase extends TestCase{
 		logger.info(response.body().string());
 	}
 	//
-	public void testHttpsGet() throws IOException{
+	public void testHttpsGet() throws Exception{
 		Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();
 		logger.info(response.string());
 	}
 	//
-	public void testHttpsPost() throws IOException{
+	public void testHttpsPost() throws Exception{
 		Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				build().
 				execute();

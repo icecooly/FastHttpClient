@@ -121,9 +121,20 @@ public class RequestCall {
 		return okHttpRequest.createRequest(callback);
 	}
 	
-	public Response execute() throws IOException {
+	public Response execute() throws Exception{
 		buildCall(null);
-		return new Response(call.execute());
+		try {
+			Response rsp=new Response(call.execute());
+			if(rsp.isSuccessful()){
+				FastHttpClientStat.onReqSuccess();
+			}else{
+				FastHttpClientStat.onReqFailure(call.request().url().toString(),null);
+			}
+			return rsp;
+		} catch (Exception e) {
+			FastHttpClientStat.onReqFailure(call.request().url().toString(),e);
+			throw e;
+		}
 	}
 
 	public void executeAsync(Callback callback) {
@@ -142,12 +153,14 @@ public class RequestCall {
 		requestCall.getCall().enqueue(new okhttp3.Callback() {
 			@Override
 			public void onFailure(Call call, final IOException e) {
+				FastHttpClientStat.onReqFailure(call.request().url().toString(),e);
 				if(finalCallback!=null){
 					finalCallback.onFailure(call,e,id);
 				}
 			}
 			@Override
 			public void onResponse(final Call call, final okhttp3.Response response) {
+				FastHttpClientStat.onReqSuccess();
 				if(finalCallback!=null){
 					finalCallback.onResponse(call,new Response(response),id);
 				}

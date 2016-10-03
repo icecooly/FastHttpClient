@@ -1,7 +1,5 @@
 package io.itit.itf.okhttp.test;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +30,7 @@ public class QQMapService {
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}
 			logger.info(response.string());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
 	}
