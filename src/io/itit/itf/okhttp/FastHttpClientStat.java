@@ -19,6 +19,8 @@ public class FastHttpClientStat {
 	protected static AtomicInteger reqTotalCount=new AtomicInteger(0);
 	protected static AtomicInteger reqFailureCount=new AtomicInteger(0);
 	protected static AtomicInteger reqExceptionCount=new AtomicInteger(0);
+	protected static Date startTime;
+	protected static Date lastAccessTime;
 	protected static LinkedBlockingDeque<String> errorMsgs=new LinkedBlockingDeque<String>(MAX_ERROR_MSG_COUNT);
 	//
 	public static void stopStat(){
@@ -37,6 +39,14 @@ public class FastHttpClientStat {
 		return reqExceptionCount.get();
 	}
 	//
+	public static Date getStartTime() {
+		return startTime;
+	}
+	//
+	public static Date getLastAccessTime() {
+		return lastAccessTime;
+	}
+	//
 	public static LinkedBlockingDeque<String> getErrorMsgs() {
 		return errorMsgs;
 	}
@@ -45,6 +55,10 @@ public class FastHttpClientStat {
 		if(isStop){
 			return;
 		}
+		if(startTime==null){
+			startTime=new Date();
+		}
+		lastAccessTime=new Date();
 		reqTotalCount.incrementAndGet();
 		reqFailureCount.incrementAndGet();
 		if(e!=null){
@@ -66,6 +80,10 @@ public class FastHttpClientStat {
 		if(isStop){
 			return;
 		}
+		if(startTime==null){
+			startTime=new Date();
+		}
+		lastAccessTime=new Date();
 		reqTotalCount.incrementAndGet();
 	}
 }
