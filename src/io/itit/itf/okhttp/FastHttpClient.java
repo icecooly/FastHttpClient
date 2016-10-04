@@ -24,6 +24,8 @@ public class FastHttpClient {
 	//
 	public static Logger logger = LoggerFactory.getLogger(FastHttpClient.class);
 	//
+	public static final String VERSION="1.0";
+	//
 	public static OkHttpClient okHttpClient=getDefaultOkHttpClient();
 	//
 	private static OkHttpClient getDefaultOkHttpClient() {
