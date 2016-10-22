@@ -1,12 +1,5 @@
 package io.itit.itf.okhttp.test;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.Callback;
@@ -14,8 +7,16 @@ import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
 import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
 import io.itit.itf.okhttp.util.FileUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import junit.framework.TestCase;
 import okhttp3.Call;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -34,6 +35,7 @@ public class HttpClientTestCase extends TestCase{
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
 				build().
+				retryOnConnectionFailure(false).
 				execute();
 		logger.info(response.string("gb2312"));//default is utf_8
 	}
@@ -151,5 +153,4 @@ public class HttpClientTestCase extends TestCase{
 				execute();
 		logger.info(response.string());
 	}
-	//
 }

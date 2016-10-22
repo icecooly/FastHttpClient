@@ -37,6 +37,7 @@ public class RequestCall {
 	private long readTimeOut;
 	private long writeTimeOut;
 	private long connTimeOut;
+	private Boolean retryOnConnectionFailure;
 	//
 	protected List<Interceptor> networkInterceptors;
 	protected SSLContext sslContext;
@@ -58,6 +59,11 @@ public class RequestCall {
 
 	public RequestCall connTimeOut(long connTimeOut) {
 		this.connTimeOut = connTimeOut;
+		return this;
+	}
+	
+	public RequestCall retryOnConnectionFailure(boolean retryOnConnectionFailure){
+		this.retryOnConnectionFailure=retryOnConnectionFailure;
 		return this;
 	}
 	
@@ -91,7 +97,9 @@ public class RequestCall {
 	public Call buildCall(Callback callback) {
 		OkHttpClient client=FastHttpClient.okHttpClient;
 		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
-				networkInterceptors.size()>0||sslContext!=null) {
+				networkInterceptors.size()>0||
+				sslContext!=null||
+				retryOnConnectionFailure!=null) {
 			OkHttpClient.Builder builder=FastHttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -102,9 +110,15 @@ public class RequestCall {
 			if(writeTimeOut>0){
 				builder.readTimeout(writeTimeOut, TimeUnit.MILLISECONDS);
 			}
+			//
 			networkInterceptors.forEach(i->builder.addNetworkInterceptor(i));
+			//
 			if(sslContext!=null){
 				setSSLSocketFactory(builder,sslContext);
+			}
+			//
+			if(retryOnConnectionFailure!=null){
+				builder.retryOnConnectionFailure(retryOnConnectionFailure);
 			}
 			client=builder.build();
 		}
