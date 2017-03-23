@@ -129,8 +129,3 @@ Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				.execute();
 System.out.println(response.body().string());
 ```
-
-9.make jar
-Eclipse->Window->Show View->Ant
-build.xml taget ->make jar
-make all jars into one jar(default release/fasthttpclient-1.0.jar)
