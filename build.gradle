@@ -38,3 +38,15 @@ dependencies {
     compile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     testCompile 'junit:junit:4.12'
 }
+
+jar {
+	manifest {
+        attributes 'Main-Class': rootProject.name
+    }
+    doFirst {
+        from {
+    		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    	}
+    	exclude 'META-INF/.RSA', 'META-INF/.SF','META-INF/*.DSA'
+    }
+}
