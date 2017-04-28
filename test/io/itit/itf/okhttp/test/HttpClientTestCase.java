@@ -37,7 +37,7 @@ public class HttpClientTestCase extends TestCase{
 				build().
 				retryOnConnectionFailure(false).
 				execute();
-		logger.info(response.string("gb2312"));//default is utf_8
+		logger.info(response.string());
 	}
 	//
 	public void testGetSyncWithHeader() throws Exception{
@@ -50,7 +50,7 @@ public class HttpClientTestCase extends TestCase{
 				addParams("para2", "111111").
 				build().
 				execute();
-		logger.info(response.string("gb2312"));//default is utf_8
+		logger.info(response.string());//default is utf_8
 	}
 	//
 	public void testPostSync() throws Exception{
