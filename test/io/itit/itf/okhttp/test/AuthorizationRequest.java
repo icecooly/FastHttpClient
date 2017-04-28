@@ -17,7 +17,7 @@ public class AuthorizationRequest {
 	//
 	private static Logger logger=LoggerFactory.getLogger(AuthorizationRequest.class);
 	//
-	public void request(){
+	public static void accessCode(){
 		try {
 			String userName="60CF3Ce97nRS1Z1Wp5m9kMmzHHEh8Rkuj31QCtVxjPWGYA9FymyqsK0Enm1P6mHJf0THbR";
 			String password="API-P4ss";
@@ -35,7 +35,31 @@ public class AuthorizationRequest {
 		}
 	}
 	//
-	public static void main(String[] args) {
-		new AuthorizationRequest().request();
+	public static void accessCodesShared() throws Exception{
+		String userName="60CF3Ce97nRS1Z1Wp5m9kMmzHHEh8Rkuj31QCtVxjPWGYA9FymyqsK0Enm1P6mHJf0THbR";
+		String password="API-P4ss";
+		String basicInfo=Base64.getEncoder().encodeToString((userName+":"+password).getBytes());
+		String url="https://api.sandbox.ewaypayments.com/AccessCodesShared";
+        String jsonBody=("{" +
+                " \"Payment\": {" +
+                "\"TotalAmount\": 100" +
+                "},"+
+                "\"RedirectUrl\": \"http://www.eway.com.au\"," +
+                "\"Method\": \"ProcessPayment\"," +
+                "\"TransactionType\": \"Purchase\"" +
+                "}");
+        System.out.println(jsonBody);
+        Response response=FastHttpClient.post().
+							url(url).
+							addHeader("Authorization", "Basic "+basicInfo).
+							addHeader("Content-Type", "application/json").//Set Content-Type
+							body(jsonBody).
+							build().
+							execute();
+        logger.info(response.string());
+	}
+	public static void main(String[] args) throws Exception {
+		AuthorizationRequest.accessCode();
+		AuthorizationRequest.accessCodesShared();
 	}
 }

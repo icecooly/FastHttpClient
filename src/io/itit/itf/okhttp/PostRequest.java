@@ -34,10 +34,14 @@ public class PostRequest extends OkHttpRequest {
 	@Override
 	protected RequestBody buildRequestBody() {
 		if(postBody!=null&&postBody.length()>0){
-			MediaType MEDIA_TYPE_PLAIN = MediaType.parse("text/plain;charset=utf-8");
-			return RequestBody.create(MEDIA_TYPE_PLAIN,postBody);
-		}
-		else if (fileInfos == null || fileInfos.isEmpty()) {
+			MediaType mediaType=null;
+			if(headers.containsKey("Content-Type")){
+				mediaType = MediaType.parse(headers.get("Content-Type"));
+			}else{
+				mediaType = MediaType.parse("text/plain;charset=utf-8");
+			}
+			return RequestBody.create(mediaType,postBody);
+		}else if (fileInfos == null || fileInfos.isEmpty()) {
 			FormBody.Builder builder = new FormBody.Builder();
 			addParams(builder);
 			FormBody formBody = builder.build();
