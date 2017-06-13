@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+	<filteredResources/>
 	<name>FastHttpClient</name>
 	<comment></comment>
 	<projects/>
@@ -18,5 +19,4 @@
 		</buildCommand>
 	</buildSpec>
 	<linkedResources/>
-	<filteredResources/>
 </projectDescription>

@@ -1,5 +1,14 @@
 package io.itit.itf.okhttp.test;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.Callback;
@@ -7,16 +16,10 @@ import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
 import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
 import io.itit.itf.okhttp.util.FileUtil;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import junit.framework.TestCase;
 import okhttp3.Call;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 /**
  * 
@@ -150,6 +153,19 @@ public class HttpClientTestCase extends TestCase{
 	public void testHttpsPost() throws Exception{
 		Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				build().
+				execute();
+		logger.info(response.string());
+	}
+	//
+	public void testProxy() throws Exception{
+		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+		logging.setLevel(Level.BASIC);
+		//
+		Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
+		Response response = FastHttpClient.get().url("http://www.baidu.com").
+				build().
+				addNetworkInterceptor(logging).
+				proxy(proxy).
 				execute();
 		logger.info(response.string());
 	}

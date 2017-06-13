@@ -1,6 +1,7 @@
 package io.itit.itf.okhttp;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +39,7 @@ public class RequestCall {
 	private long writeTimeOut;
 	private long connTimeOut;
 	private Boolean retryOnConnectionFailure;
+	private Proxy proxy;
 	//
 	protected List<Interceptor> networkInterceptors;
 	protected SSLContext sslContext;
@@ -94,12 +96,18 @@ public class RequestCall {
 		});
 	}
 	
+	public RequestCall proxy(Proxy proxy){
+		this.proxy=proxy;
+		return this;
+	}
+	
 	public Call buildCall(Callback callback) {
 		OkHttpClient client=FastHttpClient.okHttpClient;
 		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
 				networkInterceptors.size()>0||
 				sslContext!=null||
-				retryOnConnectionFailure!=null) {
+				retryOnConnectionFailure!=null||
+				proxy!=null) {
 			OkHttpClient.Builder builder=FastHttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -119,6 +127,9 @@ public class RequestCall {
 			//
 			if(retryOnConnectionFailure!=null){
 				builder.retryOnConnectionFailure(retryOnConnectionFailure);
+			}
+			if(proxy!=null){
+				builder.proxy(proxy);
 			}
 			client=builder.build();
 		}
