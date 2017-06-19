@@ -93,6 +93,5 @@ public class URLUtil {
     public static void main(String[] args) throws Exception {
 		System.out.println(URLUtil.httpGet("http://sz.bendibao.com/news/2016923/781534.htm"));
 		System.out.println(URLUtil.httpsGet("https://kyfw.12306.cn/otn/"));
-		System.out.println(URLUtil.httpsPost("https://skydu.cn"));
 	}
 }
