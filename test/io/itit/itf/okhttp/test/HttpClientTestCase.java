@@ -169,4 +169,15 @@ public class HttpClientTestCase extends TestCase{
 				execute();
 		logger.info(response.string());
 	}
+	//
+	public void testAddHeader() throws Exception{
+		String url="http://www.baidu.com";
+		Response response=FastHttpClient.
+				get().
+				addHeader("Referer","http://news.baidu.com/").
+				url(url).
+				build().
+				execute();
+		System.out.println(response.string());
+	}
 }
