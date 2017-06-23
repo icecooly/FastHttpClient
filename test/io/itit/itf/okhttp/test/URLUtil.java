@@ -15,6 +15,10 @@ import io.itit.itf.okhttp.Response;
  */
 public class URLUtil {
 	//
+	static{
+		System.setProperty ("jsse.enableSNIExtension","false");
+	}
+	//
 	public static String httpGet(String url) throws Exception {
 		Response response = FastHttpClient.get().
 				url(url).
@@ -92,7 +96,6 @@ public class URLUtil {
     //
     public static void main(String[] args) throws Exception {
 		System.out.println(URLUtil.httpGet("http://sz.bendibao.com/news/2016923/781534.htm"));
-    	System.setProperty ("jsse.enableSNIExtension","false");
     	System.out.println(URLUtil.httpsGet("https://login.weixin.qq.com/jslogin"));
 	}
 }
