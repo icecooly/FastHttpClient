@@ -27,8 +27,8 @@ public class GetBuilder extends OkHttpRequestBuilder<GetBuilder> {
 			}else if (builder.length()>0) {
 				builder.append("&");
 			}
-			builder.append(URIEncoder.encodeUTF8(k));
-			builder.append("=").append(URIEncoder.encodeUTF8(v));
+			builder.append(k);
+			builder.append("=").append(v);
 		});
 		return url+builder.toString();
 	}
