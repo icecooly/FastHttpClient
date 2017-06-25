@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import io.itit.itf.okhttp.callback.Callback;
 import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
 import okhttp3.Call;
+import okhttp3.CookieJar;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,6 +41,7 @@ public class RequestCall {
 	private long connTimeOut;
 	private Boolean retryOnConnectionFailure;
 	private Proxy proxy;
+	private CookieJar cookieJar;
 	//
 	protected List<Interceptor> networkInterceptors;
 	protected SSLContext sslContext;
@@ -101,13 +103,19 @@ public class RequestCall {
 		return this;
 	}
 	
+	public RequestCall cookieJar(CookieJar cookieJar){
+		this.cookieJar=cookieJar;
+		return this;
+	}
+	
 	public Call buildCall(Callback callback) {
 		OkHttpClient client=FastHttpClient.okHttpClient;
 		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
 				networkInterceptors.size()>0||
 				sslContext!=null||
 				retryOnConnectionFailure!=null||
-				proxy!=null) {
+				proxy!=null||
+				cookieJar!=null) {
 			OkHttpClient.Builder builder=FastHttpClient.okHttpClient.newBuilder();
 			if(connTimeOut>0){
 				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
@@ -131,7 +139,14 @@ public class RequestCall {
 			if(proxy!=null){
 				builder.proxy(proxy);
 			}
+			if(cookieJar!=null){
+				builder.cookieJar(cookieJar);
+			}
 			client=builder.build();
+			//
+			if(logger.isDebugEnabled()){
+				logger.debug("rebuild OkHttpClient");
+			}
 		}
 		return buildCall(callback,client);
 	}

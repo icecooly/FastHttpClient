@@ -1,6 +1,9 @@
 package io.itit.itf.okhttp;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -13,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 /**
@@ -30,6 +36,22 @@ public class FastHttpClient {
 	//
 	private static OkHttpClient getDefaultOkHttpClient() {
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
+		//
+		builder.cookieJar(
+				new CookieJar() {
+			 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
+			@Override
+			public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+				dumpCookie("saveFromResponse",cookies);
+				cookieStore.put(url.host(), cookies);
+			}
+			@Override
+			public List<Cookie> loadForRequest(HttpUrl url) {
+				List<Cookie> cookies = cookieStore.get(url.host());
+				dumpCookie("loadForRequest",cookies);
+               return cookies!=null?cookies:new ArrayList<Cookie>();
+			}
+		});
 		final X509TrustManager trustManager=new X509TrustManagerImpl();
 		SSLSocketFactory sslSocketFactory=null;
 		try {
@@ -45,6 +67,20 @@ public class FastHttpClient {
 				return true;
 			}
 		}).build();
+	}
+	//
+	private static void dumpCookie(String func,List<Cookie> cookies){
+		if(cookies!=null){
+			for (Cookie cookie : cookies) {
+				if(logger.isDebugEnabled()){
+					logger.debug("func:{} cookie:{} {} {}",
+							func,
+							cookie.name(),
+							cookie.domain(),
+							cookie.value());
+				}
+			}
+		}
 	}
 	//
 	public static GetBuilder get() {

@@ -93,9 +93,4 @@ public class URLUtil {
 				execute();
 		return response.body().string();
 	}
-    //
-    public static void main(String[] args) throws Exception {
-		System.out.println(URLUtil.httpGet("http://sz.bendibao.com/news/2016923/781534.htm"));
-    	System.out.println(URLUtil.httpsGet("https://login.weixin.qq.com/jslogin"));
-	}
 }
