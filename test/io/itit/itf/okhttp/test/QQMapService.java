@@ -25,7 +25,10 @@ public class QQMapService {
 		String url="http://apis.map.qq.com/ws/place/v1/suggestion?keyword="+keyword+
 				"&key="+key;
 		try {
-			Response response=FastHttpClient.get().url(url).build().execute();
+			Response response=FastHttpClient.newBuilder().
+					build().
+					get().
+					url(url).build().execute();
 			if(!response.isSuccessful()){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}

@@ -1,25 +1,9 @@
 package io.itit.itf.okhttp;
 
 import java.io.IOException;
-import java.net.Proxy;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.X509TrustManager;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.callback.Callback;
-import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
 import okhttp3.Call;
-import okhttp3.CookieJar;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -30,128 +14,17 @@ import okhttp3.Request;
  */
 public class RequestCall {
 	//
-	private static Logger logger=LoggerFactory.getLogger(RequestCall.class);
-	//
+	private OkHttpClient okHttpClient;
 	private OkHttpRequest okHttpRequest;
 	private Request request;
 	private Call call;
 	//
-	private long readTimeOut;
-	private long writeTimeOut;
-	private long connTimeOut;
-	private Boolean retryOnConnectionFailure;
-	private Proxy proxy;
-	private CookieJar cookieJar;
-	//
-	protected List<Interceptor> networkInterceptors;
-	protected SSLContext sslContext;
-	//
-	public RequestCall(OkHttpRequest request) {
+	public RequestCall(OkHttpRequest request,OkHttpClient okHttpClient) {
 		this.okHttpRequest = request;
-		this.networkInterceptors=new ArrayList<>();
-	}
-
-	public RequestCall readTimeOut(long readTimeOut) {
-		this.readTimeOut = readTimeOut;
-		return this;
-	}
-
-	public RequestCall writeTimeOut(long writeTimeOut) {
-		this.writeTimeOut = writeTimeOut;
-		return this;
-	}
-
-	public RequestCall connTimeOut(long connTimeOut) {
-		this.connTimeOut = connTimeOut;
-		return this;
-	}
-	
-	public RequestCall retryOnConnectionFailure(boolean retryOnConnectionFailure){
-		this.retryOnConnectionFailure=retryOnConnectionFailure;
-		return this;
-	}
-	
-	public RequestCall addNetworkInterceptor(Interceptor networkInterceptor){
-		networkInterceptors.add(networkInterceptor);
-		return this;
-	}
-	
-	public RequestCall sslContext(SSLContext sslContext){
-		this.sslContext=sslContext;
-		return this;
-	}
-
-	private void setSSLSocketFactory(OkHttpClient.Builder builder,SSLContext sslContext) {
-		SSLSocketFactory sslSocketFactory=null;
-		final X509TrustManager trustManager=new X509TrustManagerImpl();
-		try {
-			sslSocketFactory = sslContext.getSocketFactory();
-		} catch (Exception e) {
-			logger.error(e.getMessage(),e);
-		}
-		builder.sslSocketFactory(sslSocketFactory, trustManager).
-		hostnameVerifier(new HostnameVerifier() {
-			@Override
-			public boolean verify(String hostname, SSLSession session) {
-				return true;
-			}
-		});
-	}
-	
-	public RequestCall proxy(Proxy proxy){
-		this.proxy=proxy;
-		return this;
-	}
-	
-	public RequestCall cookieJar(CookieJar cookieJar){
-		this.cookieJar=cookieJar;
-		return this;
+		this.okHttpClient=okHttpClient;
 	}
 	
 	public Call buildCall(Callback callback) {
-		OkHttpClient client=FastHttpClient.okHttpClient;
-		if (readTimeOut>0||writeTimeOut>0||connTimeOut>0||
-				networkInterceptors.size()>0||
-				sslContext!=null||
-				retryOnConnectionFailure!=null||
-				proxy!=null||
-				cookieJar!=null) {
-			OkHttpClient.Builder builder=FastHttpClient.okHttpClient.newBuilder();
-			if(connTimeOut>0){
-				builder.readTimeout(connTimeOut, TimeUnit.MILLISECONDS);
-			}
-			if(readTimeOut>0){
-				builder.readTimeout(readTimeOut, TimeUnit.MILLISECONDS);
-			}
-			if(writeTimeOut>0){
-				builder.readTimeout(writeTimeOut, TimeUnit.MILLISECONDS);
-			}
-			//
-			networkInterceptors.forEach(i->builder.addNetworkInterceptor(i));
-			//
-			if(sslContext!=null){
-				setSSLSocketFactory(builder,sslContext);
-			}
-			//
-			if(retryOnConnectionFailure!=null){
-				builder.retryOnConnectionFailure(retryOnConnectionFailure);
-			}
-			if(proxy!=null){
-				builder.proxy(proxy);
-			}
-			if(cookieJar!=null){
-				builder.cookieJar(cookieJar);
-			}
-			client=builder.build();
-			//
-			if(logger.isDebugEnabled()){
-				logger.debug("rebuild OkHttpClient");
-			}
-		}
-		return buildCall(callback,client);
-	}
-	
-	public Call buildCall(Callback callback,OkHttpClient okHttpClient) {
 		request=createRequest(callback);
 		call = okHttpClient.newCall(request);
 		return call;
@@ -179,11 +52,6 @@ public class RequestCall {
 
 	public void executeAsync(Callback callback) {
 		buildCall(callback);
-		execute(this,callback);
-	}
-
-	public void executeAsync(Callback callback,OkHttpClient client) {
-		buildCall(callback,client);
 		execute(this,callback);
 	}
 

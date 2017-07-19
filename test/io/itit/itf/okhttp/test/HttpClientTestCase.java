@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,6 @@ public class HttpClientTestCase extends TestCase{
 				addParams("para1", "icecool").
 				addParams("para2", "111111").
 				build().
-				retryOnConnectionFailure(false).
 				execute();
 		logger.info(response.string());
 	}
@@ -107,15 +107,18 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testDownloadFile() throws InterruptedException{
-		FastHttpClient.get().
-		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
-		build().addNetworkInterceptor(new DownloadFileInterceptor(){
+		FastHttpClient.newBuilder().
+		addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
 			public void updateProgress(long downloadLenth, long totalLength, boolean isFinish) {
 				logger.info("updateProgress downloadLenth:"+downloadLenth+
 						",totalLength:"+totalLength+",isFinish:"+isFinish);
 			}
 		}).
+		build().
+		get().
+		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
+		build().
 		executeAsync(new DownloadFileCallback("/tmp/tmp.jpg") {//save file to /tmp/tmp.jpg
 				@Override
 				public void onFailure(Call call, Exception e, int id) {
@@ -135,10 +138,13 @@ public class HttpClientTestCase extends TestCase{
 	//
 	public void testUploadFile() throws Exception{
 		byte[] imageContent=FileUtil.getBytes("/tmp/tmp.jpg");
-		Response response = FastHttpClient.post().url(url).
+		Response response = FastHttpClient.newBuilder().
+				connectTimeout(10, TimeUnit.SECONDS).
+				build().
+				post().url(url).
 				addFile("file1", "a.txt", "123").
 				addFile("file2", "b.jpg", imageContent).
-				build().connTimeOut(10000).
+				build().
 				execute();
 		logger.info(response.body().string());
 	}
@@ -162,10 +168,14 @@ public class HttpClientTestCase extends TestCase{
 		logging.setLevel(Level.BASIC);
 		//
 		Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
-		Response response = FastHttpClient.get().url("http://www.baidu.com").
-				build().
+		Response response = FastHttpClient.
+				newBuilder().
 				addNetworkInterceptor(logging).
 				proxy(proxy).
+				build().
+				get().
+				url("http://www.baidu.com").
+				build().
 				execute();
 		logger.info(response.string());
 	}

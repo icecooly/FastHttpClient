@@ -2,18 +2,25 @@ package io.itit.itf.okhttp;
 
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+
 /**
  * 
  * @author icecooly
  *
  */
 public class GetBuilder extends OkHttpRequestBuilder<GetBuilder> {
+	//
+	public GetBuilder(OkHttpClient httpClient) {
+		super(httpClient);
+	}
+
 	@Override
 	public RequestCall build() {
 		if (params != null) {
 			url = appendParams(url, params);
 		}
-		return new GetRequest(url, tag, params, headers, id).build();
+		return new GetRequest(url, tag, params, headers, id).build(httpClient);
 	}
 
 	protected String appendParams(String url, Map<String, String> params) {

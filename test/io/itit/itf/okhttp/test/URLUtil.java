@@ -36,10 +36,13 @@ public class URLUtil {
 	}
 	//
 	public static String httpsGet(String url,SSLContext sslContext) throws Exception {
-		Response response = FastHttpClient.get().
+		Response response = FastHttpClient.
+				newBuilder().
+				sslContext(sslContext).
+				build().
+				get().
 				url(url).
 				build().
-				sslContext(sslContext).
 				execute();
 		return response.body().string();
 	}
@@ -71,11 +74,15 @@ public class URLUtil {
 	}
 	//
 	public static String httpsPost(String url,Map<String,String> paramMap,SSLContext sslContext) throws Exception{ 
-		Response response = FastHttpClient.post().
+		Response response = FastHttpClient.
+				newBuilder().
+				sslContext(sslContext).
+				build().
+				post().
 				url(url).
 				addParams(paramMap).
 				build().
-				sslContext(sslContext).
+				
 				execute();
 		return response.body().string();
 	}
@@ -85,11 +92,15 @@ public class URLUtil {
 	}
 	//
 	public static String httpsPostWithBody(String url,String body,SSLContext sslContext) throws Exception{ 
-		Response response = FastHttpClient.post().
+		Response response = FastHttpClient.
+				newBuilder().
+				sslContext(sslContext).
+				build().
+				post().
 				url(url).
 				body(body).
 				build().
-				sslContext(sslContext).
+				
 				execute();
 		return response.body().string();
 	}

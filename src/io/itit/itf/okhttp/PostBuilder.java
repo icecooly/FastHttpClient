@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.itit.itf.okhttp.PostRequest.FileInfo;
+import okhttp3.OkHttpClient;
 
 /**
  * 
@@ -18,13 +19,14 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	private List<FileInfo> fileInfos;
 	private String postBody;
 	//
-	public PostBuilder(){
+	public PostBuilder(OkHttpClient httpClient){
+		super(httpClient);
 		fileInfos=new ArrayList<>();
 	}
 	
 	@Override
 	public RequestCall build() {
-		return new PostRequest(url,tag, params,headers,fileInfos,postBody,id).build();
+		return new PostRequest(url,tag, params,headers,fileInfos,postBody,id).build(httpClient);
 	}
 
 	public PostBuilder params(Map<String, String> params) {

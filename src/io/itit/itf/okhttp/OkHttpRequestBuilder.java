@@ -3,6 +3,8 @@ package io.itit.itf.okhttp;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+
 /**
  * 
  * @author icecooly
@@ -10,13 +12,15 @@ import java.util.Map;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class OkHttpRequestBuilder<T extends OkHttpRequestBuilder> {
+	protected OkHttpClient httpClient;
 	protected String url;
 	protected Object tag;
 	protected Map<String, String> headers;
 	protected Map<String, String> params;
 	protected int id;
 	//
-	public OkHttpRequestBuilder(){
+	public OkHttpRequestBuilder(OkHttpClient httpClient){
+		this.httpClient=httpClient;
 		headers=new LinkedHashMap<>();
 		params=new LinkedHashMap<>();
 	}

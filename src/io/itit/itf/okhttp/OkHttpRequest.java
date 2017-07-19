@@ -6,6 +6,7 @@ import java.util.Map;
 import io.itit.itf.okhttp.PostRequest.FileInfo;
 import io.itit.itf.okhttp.callback.Callback;
 import okhttp3.Headers;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -42,8 +43,8 @@ public abstract class OkHttpRequest {
 	
 	protected abstract Request buildRequest(RequestBody requestBody);
 
-	public RequestCall build() {
-		return new RequestCall(this);
+	public RequestCall build(OkHttpClient okHttpClient) {
+		return new RequestCall(this,okHttpClient);
 	}
 
 	public Request createRequest(Callback callback) {
