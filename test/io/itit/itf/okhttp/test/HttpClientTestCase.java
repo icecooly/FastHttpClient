@@ -185,6 +185,7 @@ public class HttpClientTestCase extends TestCase{
 		Response response=FastHttpClient.
 				get().
 				addHeader("Referer","http://news.baidu.com/").
+				addHeader("cookie", "uin=test;skey=111111;").
 				url(url).
 				build().
 				execute();
