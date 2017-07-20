@@ -26,6 +26,7 @@ import okhttp3.Dispatcher;
 import okhttp3.Dns;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.OkHttpClient.Builder;
 import okhttp3.Protocol;
 
 /**
@@ -37,12 +38,15 @@ public class FastHttpClientBuilder {
 	//
 	private static Logger logger=LoggerFactory.getLogger(FastHttpClientBuilder.class);
 	//
-	private okhttp3.OkHttpClient.Builder builder;
+	private Builder builder;
+	//
+	public FastHttpClientBuilder(){
+		this.builder =new Builder();
+	}
 	//
 	public FastHttpClientBuilder(OkHttpClient okHttpClient){
-		this.builder = okHttpClient.newBuilder();
+		this.builder =okHttpClient.newBuilder();
 	}
-
 	//
 	public FastHttpClientBuilder connectTimeout(long timeout, TimeUnit unit) {
 		builder.connectTimeout(timeout, unit);

@@ -22,4 +22,13 @@ public class HttpClient {
 	public PostBuilder post() {
 		return new PostBuilder(okHttpClient);
 	}
+	//
+	public OkHttpClient getOkHttpClient() {
+		return okHttpClient;
+	}
+	//
+	public void setOkHttpClient(OkHttpClient okHttpClient) {
+		this.okHttpClient = okHttpClient;
+	}
+	
 }

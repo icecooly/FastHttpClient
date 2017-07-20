@@ -26,27 +26,21 @@ public class PostRequest extends OkHttpRequest {
 	//
 	public static Logger logger = LoggerFactory.getLogger(PostRequest.class);
 	//
-	public PostRequest(String url, Object tag, Map<String, String> params, 
-			Map<String, String> headers,List<FileInfo> fileInfos,String postBody,int id) {
-		super(url, tag, params, headers, fileInfos,postBody,id);
+	public PostRequest(String url,
+			Object tag,
+			Map<String, String> params, 
+			Map<String, String> headers,
+			List<FileInfo> fileInfos,
+			String postBody,
+			MultipartBody multipartBody,int id) {
+		super(url, tag,params,headers, fileInfos,postBody,multipartBody,id);
 	}
 
 	@Override
 	protected RequestBody buildRequestBody() {
-		if(postBody!=null&&postBody.length()>0){
-			MediaType mediaType=null;
-			if(headers.containsKey("Content-Type")){
-				mediaType = MediaType.parse(headers.get("Content-Type"));
-			}else{
-				mediaType = MediaType.parse("text/plain;charset=utf-8");
-			}
-			return RequestBody.create(mediaType,postBody);
-		}else if (fileInfos == null || fileInfos.isEmpty()) {
-			FormBody.Builder builder = new FormBody.Builder();
-			addParams(builder);
-			FormBody formBody = builder.build();
-			return formBody;
-		} else{
+		if(multipartBody!=null) {
+			return multipartBody;
+		}else if(fileInfos!=null && fileInfos.size()>0) {
 			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 			addParams(builder);
 			fileInfos.forEach(fileInfo -> {
@@ -54,7 +48,23 @@ public class PostRequest extends OkHttpRequest {
 						fileInfo.fileContent);
 				builder.addFormDataPart(fileInfo.partName, fileInfo.fileName, fileBody);
 			});
+			if(postBody!=null&&postBody.length()>0){
+				builder.addPart(RequestBody.create(MultipartBody.FORM,postBody));
+			}
 			return builder.build();
+		}else if(postBody!=null&&postBody.length()>0){
+			MediaType mediaType=null;
+			if(headers.containsKey("Content-Type")){
+				mediaType = MediaType.parse(headers.get("Content-Type"));
+			}else{
+				mediaType = MediaType.parse("text/plain;charset=utf-8");
+			}
+			return RequestBody.create(mediaType,postBody);
+		}else{
+			FormBody.Builder builder = new FormBody.Builder();
+			addParams(builder);
+			FormBody formBody = builder.build();
+			return formBody;
 		}
 	}
 
@@ -77,7 +87,6 @@ public class PostRequest extends OkHttpRequest {
 			});
 		}
 	}
-
 	//
 	public static class FileInfo {
 		public String partName;

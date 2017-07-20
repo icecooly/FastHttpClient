@@ -26,7 +26,7 @@ public class FastHttpClient {
 	//
 	public static final String VERSION="1.2";
 	//
-	private static OkHttpClient okHttpClient=getDefaultOkHttpClient();
+	private static HttpClient httpClient=new HttpClient(getDefaultOkHttpClient());
 	//
 	private static OkHttpClient getDefaultOkHttpClient() {
 		OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
@@ -49,14 +49,18 @@ public class FastHttpClient {
 	}
 	//
 	public static FastHttpClientBuilder newBuilder(){
-		return new FastHttpClientBuilder(okHttpClient);
+		return new FastHttpClientBuilder();
+	}
+	//
+	public static FastHttpClientBuilder defaultBuilder(){
+		return new FastHttpClientBuilder(httpClient.getOkHttpClient());
 	}
 	//
 	public static GetBuilder get() {
-		return new HttpClient(okHttpClient).get();
+		return httpClient.get();
 	}
 	//
 	public static PostBuilder post() {
-		return new HttpClient(okHttpClient).post();
+		return httpClient.post();
 	}
 }
