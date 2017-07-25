@@ -128,3 +128,31 @@ Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
 				.execute();
 System.out.println(response.body().string());
 ```
+
+9.add header
+```java
+String url="http://www.baidu.com";
+Response response=FastHttpClient.
+			get().
+			addHeader("Referer","http://news.baidu.com/").
+			addHeader("cookie", "uin=test;skey=111111;").
+			url(url).
+			build().
+			execute();
+System.out.println(response.string());
+```
+
+10.proxy
+```java
+Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
+Response response = FastHttpClient.
+		newBuilder().
+		addNetworkInterceptor(logging).
+		proxy(proxy).
+		build().
+		get().
+		url("http://www.baidu.com").
+		build().
+		execute();
+logger.info(response.string());
+```
