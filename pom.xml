@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.icecooly</groupId>
-	<artifactId>WeixinAutoChat</artifactId>
+	<artifactId>FastHttpClient</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 
 
-	<name>WeixinAutoChat</name>
+	<name>FastHttpClient</name>
 	<url>http://maven.apache.org</url>
 
 
