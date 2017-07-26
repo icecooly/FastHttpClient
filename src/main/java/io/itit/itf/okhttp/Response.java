@@ -12,43 +12,57 @@ import okhttp3.ResponseBody;
 
 /**
  * 
- * @author icecooly
+ * @author skydu
  *
  */
 public class Response {
 	//
 	private okhttp3.Response response;
-	//
+	
+	/**
+	 * 
+	 * @param response
+	 */
 	public Response(okhttp3.Response response){
 		this.response=response;
 	}
-	//
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public Request request() {
 		return response.request();
 	}
 
 	/**
-	 * Returns the HTTP protocol, such as {@link Protocol#HTTP_1_1} or
-	 * {@link Protocol#HTTP_1_0}.
+	 * 
+	 * @return
 	 */
 	public Protocol protocol() {
 		return response.protocol();
 	}
 
-	/** Returns the HTTP status code. */
+	/**
+	 * 
+	 * @return
+	 */
 	public int code() {
 		return response.code();
 	}
 
 	/**
-	 * Returns true if the code is in [200..300), which means the request was
-	 * successfully received, understood, and accepted.
+	 * 
+	 * @return
 	 */
 	public boolean isSuccessful() {
 		return response.isSuccessful();
 	}
 
-	/** Returns the HTTP status message or null if it is unknown. */
+	/**
+	 * 
+	 * @return
+	 */
 	public String message() {
 		return response.message();
 	}

@@ -138,7 +138,7 @@ public class IOUtil {
 
 	/**
 	 * 
-	 * @param file
+	 * @param in
 	 * @return
 	 * @throws IOException
 	 */

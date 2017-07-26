@@ -58,57 +58,115 @@ public class FastHttpClientBuilder {
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param timeout
+	 * @param unit
+	 * @return
+	 */
 	public FastHttpClientBuilder writeTimeout(long timeout, TimeUnit unit) {
 		builder.writeTimeout(timeout, unit);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param interval
+	 * @param unit
+	 * @return
+	 */
 	public FastHttpClientBuilder pingInterval(long interval, TimeUnit unit) {
 		builder.pingInterval(interval, unit);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param proxy
+	 * @return
+	 */
 	public FastHttpClientBuilder proxy(Proxy proxy) {
 		builder.proxy(proxy);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param proxySelector
+	 * @return
+	 */
 	public FastHttpClientBuilder proxySelector(ProxySelector proxySelector) {
 		builder.proxySelector(proxySelector);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param cookieJar
+	 * @return
+	 */
 	public FastHttpClientBuilder cookieJar(CookieJar cookieJar) {
 		builder.cookieJar(cookieJar);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param cache
+	 * @return
+	 */
 	public FastHttpClientBuilder cache(Cache cache) {
 		builder.cache(cache);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param dns
+	 * @return
+	 */
 	public FastHttpClientBuilder dns(Dns dns) {
 		builder.dns(dns);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param socketFactory
+	 * @return
+	 */
 	public FastHttpClientBuilder socketFactory(SocketFactory socketFactory) {
 		builder.socketFactory(socketFactory);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param sslSocketFactory
+	 * @return
+	 */
 	@SuppressWarnings("deprecation")
 	public FastHttpClientBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory) {
 		builder.sslSocketFactory(sslSocketFactory);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param sslSocketFactory
+	 * @param trustManager
+	 * @return
+	 */
 	public FastHttpClientBuilder sslSocketFactory(SSLSocketFactory sslSocketFactory, X509TrustManager trustManager) {
 		builder.sslSocketFactory(sslSocketFactory, trustManager);
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param hostnameVerifier
+	 * @return
+	 */
 	public FastHttpClientBuilder hostnameVerifier(HostnameVerifier hostnameVerifier) {
 		builder.hostnameVerifier(hostnameVerifier);
 		return this;
@@ -184,6 +242,7 @@ public class FastHttpClientBuilder {
 	/**
 	 * 
 	 * @param sslContext
+	 * @return
 	 */
 	public FastHttpClientBuilder sslContext(SSLContext sslContext) {
 		SSLSocketFactory sslSocketFactory=null;

@@ -153,9 +153,8 @@ public class FileUtil {
 	}
 
 	/**
-	 * get content from file
 	 * 
-	 * @param filePath
+	 * @param file
 	 * @return
 	 * @throws IOException
 	 */
@@ -164,7 +163,12 @@ public class FileUtil {
 				StandardCharsets.UTF_8);
 	}
 
-	//
+	/**
+	 * 
+	 * @param content
+	 * @param file
+	 * @throws IOException
+	 */
 	public static void saveContent(String content, File file)
 			throws IOException {
 		try (FileOutputStream fos = new FileOutputStream(file);
@@ -174,6 +178,12 @@ public class FileUtil {
 		}
 	}
 
+	/**
+	 * 
+	 * @param bb
+	 * @param file
+	 * @throws IOException
+	 */
 	public static void saveContent(byte bb[], File file) throws IOException {
 		try (FileOutputStream fos = new FileOutputStream(file);
 				ByteArrayInputStream bis = new ByteArrayInputStream(bb)) {
