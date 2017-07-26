@@ -32,7 +32,7 @@ public class QQMapService {
 			if(!response.isSuccessful()){
 				throw new IllegalArgumentException("定位失败，请稍后再试");
 			}
-			logger.info(response.string());
+			logger.debug(response.string());
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}

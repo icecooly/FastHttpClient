@@ -19,8 +19,6 @@ import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
 import io.itit.itf.okhttp.util.FileUtil;
 import junit.framework.TestCase;
 import okhttp3.Call;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 
 /**
  * 
@@ -164,13 +162,9 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testProxy() throws Exception{
-		HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-		logging.setLevel(Level.BASIC);
-		//
 		Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
 		Response response = FastHttpClient.
 				newBuilder().
-				addNetworkInterceptor(logging).
 				proxy(proxy).
 				build().
 				get().
