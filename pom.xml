@@ -6,9 +6,8 @@
 	<artifactId>FastHttpClient</artifactId>
 	<packaging>jar</packaging>
 	<version>1.2</version>
-
-
 	<name>FastHttpClient</name>
+	<description>A Java library for httpclient</description>
 	<url>http://maven.apache.org</url>
 
 	<licenses>
