@@ -1,7 +1,21 @@
 # FastHttpClient
 封装OkHttp3(jdk8以上)
 
-======
+Download
+--------
+
+Download Jar or grab via Maven:
+```xml
+<dependency>
+  <groupId>com.github.icecooly</groupId>
+  <artifactId>FastHttpClient</artifactId>
+  <version>1.3</version>
+</dependency>
+```
+or Gradle:
+```groovy
+compile 'com.github.icecooly:FastHttpClient:1.3'
+```
 
 Usage
 ==============
