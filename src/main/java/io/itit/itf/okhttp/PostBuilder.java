@@ -86,4 +86,9 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 	throws UnsupportedEncodingException{
 		return addFile(partName, fileName, content.getBytes(charsetName));
 	}
+	
+	public PostBuilder addFile(String partName,String fileName,byte[] content,String charsetName) 
+	throws UnsupportedEncodingException{
+		return addFile(partName, fileName,content);
+	}
 }

@@ -135,13 +135,12 @@ public class HttpClientTestCase extends TestCase{
 	}
 	//
 	public void testUploadFile() throws Exception{
-		byte[] imageContent=FileUtil.getBytes("/tmp/tmp.jpg");
+		byte[] imageContent=FileUtil.getBytes("/tmp/cdz.jpg");
 		Response response = FastHttpClient.newBuilder().
 				connectTimeout(10, TimeUnit.SECONDS).
 				build().
 				post().url(url).
-				addFile("file1", "a.txt", "123").
-				addFile("file2", "b.jpg", imageContent).
+				addFile("file", "cdz.jpg",imageContent).
 				build().
 				execute();
 		logger.info(response.body().string());
