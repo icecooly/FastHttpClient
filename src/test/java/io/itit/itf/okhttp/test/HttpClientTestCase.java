@@ -1,7 +1,6 @@
 package io.itit.itf.okhttp.test;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -12,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
-import io.itit.itf.okhttp.callback.Callback;
 import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
 import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
@@ -29,45 +27,24 @@ public class HttpClientTestCase extends TestCase{
 	//
 	private static Logger logger=LoggerFactory.getLogger(HttpClientTestCase.class);
 	//
-	private static String url = "http://localhost:7002/p/api/test";
-	//
+	/**
+	 * 同步Get请求(访问百度首页,自动处理https单向认证)
+	 * @throws Exception
+	 */
 	public void testGetSync() throws Exception{
-		Response response = FastHttpClient.get().
-				url("http://sz.bendibao.com/news/2016923/781534.htm").
-				addParams("para1", "icecool").
-				addParams("para2", "111111").
+		String resp=FastHttpClient.get().
+				url("https://www.baidu.com").
 				build().
-				execute();
-		logger.info(response.string());
+				execute().string();
+		logger.info(resp);
 	}
-	//
-	public void testGetSyncWithHeader() throws Exception{
-		String userAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6; zh-CN; rv:1.9.2.11) "
-				+ "Gecko/20101012 Firefox/3.6.11";
-		Response response = FastHttpClient.get().
-				url("http://sz.bendibao.com/news/2016923/781534.htm").
-				addHeader("User-Agent", userAgent).
-				addParams("para1", "icecool").
-				addParams("para2", "111111").
-				build().
-				execute();
-		logger.info(response.string());//default is utf_8
-	}
-	//
-	public void testPostSync() throws Exception{
-		Response response = FastHttpClient.post().url(url).
-				addParams("para1", "123456").
-				addParams("para2", "测试").
-				build().
-				execute();
-		logger.info(response.string());
-	}
-	//
+	
+	/**
+	 * 异步Get请求(访问百度首页)
+	 * @throws InterruptedException
+	 */
 	public void testGetAsync() throws InterruptedException{
-		FastHttpClient.get().url(url).
-		addParams("para1", "icecool").
-		addParams("para2", "111111").
-		build().
+		FastHttpClient.get().url("https://www.baidu.com").build().
 		executeAsync(new StringCallback() {
 			@Override
 			public void onFailure(Call call, Exception e, int id) {
@@ -78,35 +55,32 @@ public class HttpClientTestCase extends TestCase{
 				logger.info("response:{}",response);
 			}
 		});
-		Thread.sleep(50000);
+		Thread.sleep(3000);
 	}
-	//
-	public void testPostAsync() throws InterruptedException{
-		FastHttpClient.post().url(url).
-		addParams("para1", "icecool").
-		addParams("para2", "测试中文").
-		build().
-		executeAsync(new Callback() {
-				@Override
-				public void onFailure(Call call, Exception e, int id) {
-					logger.error(e.getMessage(),e);
-				}
-				@Override
-				public void onResponse(Call call, Response response, int id) {
-					try {
-						logger.info(response.string());
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					System.exit(0);
-				}
-		});
-		Thread.sleep(50000);
+	
+	/**
+	 * 百度搜索关键字'微信机器人'
+	 * @throws Exception
+	 */
+	public void testBaiduSearch() throws Exception{
+		String html = FastHttpClient.get().
+				url("http://www.baidu.com/s").
+				addParams("wd", "微信机器人").
+				addParams("tn", "baidu").
+				build().
+				execute().
+				string();
+		logger.info(html);
 	}
-	//
+	
+	/**
+	 * 异步下载一张百度图片，有下载进度,保存为/tmp/tmp.jpg
+	 * @throws InterruptedException
+	 */
 	public void testDownloadFile() throws InterruptedException{
-		FastHttpClient.newBuilder().
-		addNetworkInterceptor(new DownloadFileInterceptor(){
+		String savePath="/tmp/tmp.jpg";
+		String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
+		FastHttpClient.newBuilder().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
 			public void updateProgress(long downloadLenth, long totalLength, boolean isFinish) {
 				logger.info("updateProgress downloadLenth:"+downloadLenth+
@@ -115,9 +89,9 @@ public class HttpClientTestCase extends TestCase{
 		}).
 		build().
 		get().
-		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
+		url(imageUrl).
 		build().
-		executeAsync(new DownloadFileCallback("/tmp/tmp.jpg") {//save file to /tmp/tmp.jpg
+		executeAsync(new DownloadFileCallback(savePath) {//save file to /tmp/tmp.jpg
 				@Override
 				public void onFailure(Call call, Exception e, int id) {
 					logger.error(e.getMessage(),e);
@@ -131,50 +105,48 @@ public class HttpClientTestCase extends TestCase{
 					logger.info("onSuccessWithInputStream");
 				}
 		});
-		Thread.sleep(50000);
+		Thread.sleep(3000);
 	}
-	//
+	
+	/**
+	 * 上传文件
+	 * @throws Exception
+	 */
 	public void testUploadFile() throws Exception{
 		byte[] imageContent=FileUtil.getBytes("/tmp/cdz.jpg");
 		Response response = FastHttpClient.newBuilder().
 				connectTimeout(10, TimeUnit.SECONDS).
 				build().
-				post().url(url).
+				post().url("http://上传地址").
 				addFile("file", "cdz.jpg",imageContent).
 				build().
 				execute();
 		logger.info(response.body().string());
 	}
-	//
-	public void testHttpsGet() throws Exception{
-		Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
-				build().
-				execute();
-		logger.info(response.string());
-	}
-	//
-	public void testHttpsPost() throws Exception{
-		Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
-				build().
-				execute();
-		logger.info(response.string());
-	}
-	//
+	
+	/**
+	 * 设置网络代理
+	 * @throws Exception
+	 */
 	public void testProxy() throws Exception{
-		Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
+		Proxy proxy = new Proxy(Proxy.Type.SOCKS,new InetSocketAddress("127.0.0.1", 1088));
 		Response response = FastHttpClient.
 				newBuilder().
 				proxy(proxy).
 				build().
 				get().
-				url("http://www.baidu.com").
+				url("https://www.baidu.com").
 				build().
 				execute();
 		logger.info(response.string());
 	}
-	//
+	
+	/**
+	 * 设置http头部信息
+	 * @throws Exception
+	 */
 	public void testAddHeader() throws Exception{
-		String url="http://www.baidu.com";
+		String url="https://www.baidu.com";
 		Response response=FastHttpClient.
 				get().
 				addHeader("Referer","http://news.baidu.com/").

@@ -1,5 +1,14 @@
 # FastHttpClient
-封装OkHttp3(jdk8以上)
+封装OkHttp3(jdk8或以上)
+
+- 支持多线程异步请求
+- 支持Http/Https协议
+- 支持同步/异步请求
+- 支持异步延迟执行
+- 支持Cookie持久化
+- 支持JSON、表单提交
+- 支持文件和图片上传/批量上传，支持同步/异步上传，支持进度提示
+
 
 Download
 --------
@@ -17,76 +26,43 @@ or Gradle:
 compile 'com.github.icecooly:FastHttpClient:1.3'
 ```
 
-Usage
+简单的例子
 ==============
-1.synchronized get
+1.同步Get请求(访问百度首页,自动处理https单向认证)
 ```java
-FastHttpClient.get().
-		url(url).
-		addParams("userName", "icecool").
-		addParams("password", "111111").
-		build().
-		execute();
-```
-		
-2.synchronized post
-```java
-FastHttpClient.post().
-		url(url).
-		addParams("userName", "icecool").
-		addParams("password", "111111").
-		build().
-		execute();
+String url="https://www.baidu.com";
+String resp=FastHttpClient.get().url(url).build().execute().string();
 ```
 
-3.asynchronized get
+2.异步Get请求(访问百度首页)
 ```java
-FastHttpClient.get().
-			url(url).
-			addParams("userName","icecool").
-			addParams("password", "111111").
-			build().
-			executeAsync(new Callback() {
-			@Override
-			public void onFailure(Call call, Exception e, int id) {
-				//TODO
-			}
-
-			@Override
-			public void onResponse(Call call,Response response, int id) {
-				try {
-					System.out.println(response.body().string());
-				} catch (IOException e) {
-				}
-			}
-		});
+FastHttpClient.get().url("https://www.baidu.com").build().
+	executeAsync(new StringCallback() {
+		@Override
+		public void onFailure(Call call, Exception e, int id) {
+			logger.error(e.getMessage(),e);
+		}
+		@Override
+		public void onSuccess(Call call, String response, int id) {
+			logger.info("response:{}",response);
+		}
+	});
 ```
 
-4.asynchronized post
+3.百度搜索关键字'微信机器人'
 ```java
-FastHttpClient.post().
-			url(url).
-			addParams("userName","icecool").
-			addParams("password", "111111").
-			build().
-			executeAsync(new Callback() {
-			@Override
-			public void onFailure(Call call, Exception e, int id) {
-				//TODO
-			}
-
-			@Override
-			public void onResponse(Call call,Response response, int id) {
-				try {
-					System.out.println(response.body().string());
-				} catch (IOException e) {
-				}
-			}
-		});
+String html = FastHttpClient.get().
+				url("http://www.baidu.com/s").
+				addParams("wd", "微信机器人").
+				addParams("tn", "baidu").
+				build().
+				execute().
+				string();
 ```
 
-5.download file aynsc
+4.异步下载一张百度图片，有下载进度,保存为/tmp/tmp.jpg
 ```java
+String savePath="/tmp/tmp.jpg";
 FastHttpClient.get().
 		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
 		build().addNetworkInterceptor(new DownloadFileInterceptor(){
@@ -96,7 +72,7 @@ FastHttpClient.get().
 						",totalLength:"+totalLength+",isFinish:"+isFinish);
 			}
 		}).
-		executeAsync(new DownloadFileCallback("/tmp/tmp.jpg") {//save file to /tmp/tmp.jpg
+		executeAsync(new DownloadFileCallback(savePath) {
 				@Override
 				public void onFailure(Call call, Exception e, int id) {
 					e.printStackTrace();
@@ -111,52 +87,21 @@ FastHttpClient.get().
 					System.out.println("onSuccessWithInputStream");
 				}
 		});
-Thread.sleep(50000);
 ```
 
-6.upload file
+5.上传文件
 ```java
 byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 		response = FastHttpClient.post().
 				url(url).
-				addFile("file1", "a.txt", "123").
-				addFile("file2", "b.jpg", imageContent).
+				addFile("file", "b.jpg", imageContent).
 				build().
 				connTimeOut(10000).
 				execute();
 System.out.println(response.body().string());
 ```
 
-7.https get
-```java
-Response response = FastHttpClient.get().url("https://kyfw.12306.cn/otn/").
-				build()
-				.execute();
-System.out.println(response.body().string());
-```
-
-8.https post
-```java
-Response response = FastHttpClient.post().url("https://kyfw.12306.cn/otn/").
-				build()
-				.execute();
-System.out.println(response.body().string());
-```
-
-9.add header
-```java
-String url="http://www.baidu.com";
-Response response=FastHttpClient.
-			get().
-			addHeader("Referer","http://news.baidu.com/").
-			addHeader("cookie", "uin=test;skey=111111;").
-			url(url).
-			build().
-			execute();
-System.out.println(response.string());
-```
-
-10.proxy
+6.设置网络代理
 ```java
 Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
 Response response = FastHttpClient.
@@ -169,4 +114,17 @@ Response response = FastHttpClient.
 		build().
 		execute();
 logger.info(response.string());
+```
+
+7.设置Http头部信息
+```java
+String url="https://www.baidu.com";
+Response response=FastHttpClient.
+			get().
+			addHeader("Referer","http://news.baidu.com/").
+			addHeader("cookie", "uin=test;skey=111111;").
+			url(url).
+			build().
+			execute();
+System.out.println(response.string());
 ```
