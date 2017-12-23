@@ -1,5 +1,6 @@
 package io.itit.itf.okhttp;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -44,8 +45,13 @@ public class PostRequest extends OkHttpRequest {
 			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 			addParams(builder);
 			fileInfos.forEach(fileInfo -> {
-				RequestBody fileBody = RequestBody.create(MediaType.parse(getMimeType(fileInfo.fileName)),
+				RequestBody fileBody=null;
+				if(fileInfo.file!=null) {
+					fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),fileInfo.file);
+				}else {
+					fileBody = RequestBody.create(MediaType.parse(getMimeType(fileInfo.fileName)),
 						fileInfo.fileContent);
+				}
 				builder.addFormDataPart(fileInfo.partName, fileInfo.fileName, fileBody);
 			});
 			if(postBody!=null&&postBody.length()>0){
@@ -92,6 +98,7 @@ public class PostRequest extends OkHttpRequest {
 		public String partName;
 		public String fileName;
 		public byte[] fileContent;
+		public File file;
 	}
 	//
 	public static String getMimeType(String path) {

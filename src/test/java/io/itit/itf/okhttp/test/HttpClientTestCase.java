@@ -156,4 +156,14 @@ public class HttpClientTestCase extends TestCase{
 				execute();
 		System.out.println(response.string());
 	}
+	public void testXForwardedFor() throws Exception{
+		String url="http://uat.itit.io:9202/p/api/app_wx_order";
+		Response response=FastHttpClient.
+				get().
+				addHeader("X-Forwarded-For","234.45.124.12").
+				url(url).
+				build().
+				execute();
+		System.out.println(response.string());
+	}
 }

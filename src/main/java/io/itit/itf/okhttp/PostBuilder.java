@@ -1,5 +1,6 @@
 package io.itit.itf.okhttp;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -73,6 +74,15 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 		fileInfo.partName=partName;
 		fileInfo.fileName=fileName;
 		fileInfo.fileContent=content;
+		fileInfos.add(fileInfo);
+		return this;
+	}
+	
+	public PostBuilder addFile(String partName,String fileName,File file){
+		FileInfo fileInfo=new FileInfo();
+		fileInfo.partName=partName;
+		fileInfo.fileName=fileName;
+		fileInfo.file=file;
 		fileInfos.add(fileInfo);
 		return this;
 	}
