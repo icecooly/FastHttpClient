@@ -1,8 +1,12 @@
 package io.itit.itf.okhttp.test;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.Response;
@@ -14,6 +18,8 @@ import io.itit.itf.okhttp.Response;
  *
  */
 public class URLUtil {
+	//
+	private static Logger logger=LoggerFactory.getLogger(URLUtil.class);
 	//
 	static{
 		System.setProperty ("jsse.enableSNIExtension","false");
@@ -103,5 +109,30 @@ public class URLUtil {
 				
 				execute();
 		return response.body().string();
+	}
+	//
+	private static void checkResult(Response response) {
+		if(!response.isSuccessful()) {
+			throw new IllegalArgumentException(response.code()+"/"+response.message());
+		}
+	}
+	//
+	public static InputStream httpGetReturnInputStream(String url){
+		InputStream rspBody=null;
+		try {
+			Response response=FastHttpClient.get().
+					url(url).
+					build().
+					execute();
+			checkResult(response);
+			rspBody=response.byteStream();
+		}catch (Exception e) {
+			throw new RuntimeException(e.getMessage(),e);
+		}finally {
+			if(logger.isInfoEnabled()){
+				logger.info("url:{} \nresponse:{}",url,rspBody);
+			}
+		}
+		return rspBody;
 	}
 }
