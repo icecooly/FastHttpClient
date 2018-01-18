@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+
+import io.itit.itf.okhttp.test.IOUtil;
 /**
  * 
  * @author icecooly
@@ -58,6 +60,12 @@ public class FileUtil {
 				ByteArrayInputStream bis = new ByteArrayInputStream(
 						content.getBytes())) {
 			copy(bis, fos);
+		}
+	}
+	
+	public static void saveContent(InputStream is, File file) throws IOException {
+		try (FileOutputStream fos = new FileOutputStream(file)) {
+			IOUtil.copy(is, fos);
 		}
 	}
 
