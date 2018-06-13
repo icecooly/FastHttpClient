@@ -128,3 +128,15 @@ Response response=FastHttpClient.
 			execute();
 System.out.println(response.string());
 ```
+
+8.设置https证书
+```java
+SSLContext sslContext=getxxx();
+Response response=FastHttpClient.
+			get().
+			sslContext(sslContext).
+			url(url).
+			build().
+			execute();
+System.out.println(response.string());
+```
