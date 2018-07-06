@@ -23,6 +23,10 @@ public class HttpClient {
 		return new PostBuilder(okHttpClient);
 	}
 	//
+	public PutBuilder put() {
+		return new PutBuilder(okHttpClient);
+	}
+	//
 	public OkHttpClient getOkHttpClient() {
 		return okHttpClient;
 	}

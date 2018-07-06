@@ -21,7 +21,7 @@ public abstract class OkHttpRequest {
 	protected String url;
 	protected Map<String, String> params;
 	protected Map<String, String> headers;
-	protected String postBody;
+	protected String body;
 	protected List<FileInfo> fileInfos;
 	protected MultipartBody multipartBody;
 	protected Request.Builder builder = new Request.Builder();
@@ -29,14 +29,14 @@ public abstract class OkHttpRequest {
 	protected OkHttpRequest(String url, Object tag, Map<String, String> params,
 			Map<String, String> headers,
 			List<FileInfo> fileInfos,
-			String postBody,
+			String body,
 			MultipartBody multipartBody,
 			int id) {
 		this.url = url;
 		this.params = params;
 		this.headers = headers;
 		this.fileInfos=fileInfos;
-		this.postBody=postBody;
+		this.body=body;
 		this.multipartBody=multipartBody;
 		this.id = id;
 		if (url==null) {

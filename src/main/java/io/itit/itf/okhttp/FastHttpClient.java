@@ -59,4 +59,8 @@ public class FastHttpClient {
 	public static PostBuilder post() {
 		return httpClient.post();
 	}
+	//
+	public static PutBuilder put() {
+		return httpClient.put();
+	}
 }

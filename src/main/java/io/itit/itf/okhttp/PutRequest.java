@@ -1,6 +1,5 @@
 package io.itit.itf.okhttp;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -11,6 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.itit.itf.okhttp.PostRequest.FileInfo;
 import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -23,18 +23,18 @@ import okhttp3.RequestBody;
  * @author icecooly
  *
  */
-public class PostRequest extends OkHttpRequest {
+public class PutRequest extends OkHttpRequest {
 	//
-	public static Logger logger = LoggerFactory.getLogger(PostRequest.class);
+	public static Logger logger = LoggerFactory.getLogger(PutRequest.class);
 	//
-	public PostRequest(String url,
+	public PutRequest(String url,
 			Object tag,
 			Map<String, String> params, 
 			Map<String, String> headers,
 			List<FileInfo> fileInfos,
-			String postBody,
+			String body,
 			MultipartBody multipartBody,int id) {
-		super(url, tag,params,headers, fileInfos,postBody,multipartBody,id);
+		super(url, tag,params,headers, fileInfos,body,multipartBody,id);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class PostRequest extends OkHttpRequest {
 
 	@Override
 	protected Request buildRequest(RequestBody requestBody) {
-		return builder.post(requestBody).build();
+		return builder.put(requestBody).build();
 	}
 
 	private void addParams(FormBody.Builder builder) {
@@ -92,13 +92,6 @@ public class PostRequest extends OkHttpRequest {
 						RequestBody.create(null,v));
 			});
 		}
-	}
-	//
-	public static class FileInfo {
-		public String partName;
-		public String fileName;
-		public byte[] fileContent;
-		public File file;
 	}
 	//
 	public static String getMimeType(String path) {
