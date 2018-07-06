@@ -29,7 +29,7 @@ public class PutBuilder extends OkHttpRequestBuilder<PutBuilder> {
 	
 	@Override
 	public RequestCall build() {
-		return new PostRequest(
+		return new PutRequest(
 					url,
 					tag, 
 					params,
