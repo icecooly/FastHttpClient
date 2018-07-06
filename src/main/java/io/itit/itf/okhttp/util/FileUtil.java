@@ -8,8 +8,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-
-import io.itit.itf.okhttp.test.IOUtil;
 /**
  * 
  * @author icecooly

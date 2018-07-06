@@ -45,6 +45,13 @@ public abstract class OkHttpRequestBuilder<T extends OkHttpRequestBuilder> {
 		return (T) this;
 	}
 
+	public T addHeaders(Map<String, String> headers) {
+		if(headers!=null) {
+			headers.forEach((k,v)->{this.headers.put(k, v);});
+		}
+		return (T) this;
+	}
+	
 	public T addHeader(String key, String val) {
 		headers.put(key, val);
 		return (T) this;
