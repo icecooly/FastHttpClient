@@ -129,13 +129,13 @@ public class HttpClientTestCase extends TestCase{
 	 * @throws Exception
 	 */
 	public void testProxy() throws Exception{
-		Proxy proxy = new Proxy(Proxy.Type.SOCKS,new InetSocketAddress("127.0.0.1", 1088));
+		Proxy proxy = new Proxy(Proxy.Type.SOCKS,new InetSocketAddress("1.1.1.1", 1088));
 		Response response = FastHttpClient.
 				newBuilder().
 				proxy(proxy).
 				build().
 				get().
-				url("https://www.baidu.com").
+				url("http://ip111.cn/").
 				build().
 				execute();
 		logger.info(response.string());
