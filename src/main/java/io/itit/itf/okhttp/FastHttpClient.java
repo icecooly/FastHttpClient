@@ -52,6 +52,10 @@ public class FastHttpClient {
 		return new FastHttpClientBuilder(httpClient.getOkHttpClient());
 	}
 	//
+	public static FastHttpClientBuilder newBuilder(OkHttpClient client){
+		return new FastHttpClientBuilder(client);
+	}
+	//
 	public static GetBuilder get() {
 		return httpClient.get();
 	}
