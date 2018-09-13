@@ -36,6 +36,17 @@ public class PostRequest extends OkHttpRequest {
 			MultipartBody multipartBody,int id) {
 		super(url, tag,params,headers, fileInfos,postBody,multipartBody,id);
 	}
+	
+	public PostRequest(String url,
+			Object tag,
+			Map<String, String> params, 
+			Map<String, String> encodeParams, 
+			Map<String, String> headers,
+			List<FileInfo> fileInfos,
+			String postBody,
+			MultipartBody multipartBody,int id) {
+		super(url, tag,params,encodeParams,headers, fileInfos,postBody,multipartBody,id);
+	}
 
 	@Override
 	protected RequestBody buildRequestBody() {
@@ -82,6 +93,9 @@ public class PostRequest extends OkHttpRequest {
 	private void addParams(FormBody.Builder builder) {
 		if (params!= null) {
 			params.forEach((k,v)->builder.add(k,v));
+		}
+		if (encodedParams!=null) {
+			encodedParams.forEach((k,v)->builder.addEncoded(k,v));
 		}
 	}
 	//

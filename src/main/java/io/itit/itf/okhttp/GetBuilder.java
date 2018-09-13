@@ -49,5 +49,15 @@ public class GetBuilder extends OkHttpRequestBuilder<GetBuilder> {
 		params.put(key, val);
 		return this;
 	}
+	
+	public GetBuilder encodedParams(Map<String, String> params) {
+		this.encodedParams = params;
+		return this;
+	}
+
+	public GetBuilder addEncodedParams(String key, String val) {
+		encodedParams.put(key, val);
+		return this;
+	}
 
 }

@@ -17,12 +17,14 @@ public abstract class OkHttpRequestBuilder<T extends OkHttpRequestBuilder> {
 	protected Object tag;
 	protected Map<String, String> headers;
 	protected Map<String, String> params;
+	protected Map<String, String> encodedParams;
 	protected int id;
 	//
 	public OkHttpRequestBuilder(OkHttpClient httpClient){
 		this.httpClient=httpClient;
 		headers=new LinkedHashMap<>();
 		params=new LinkedHashMap<>();
+		encodedParams=new LinkedHashMap<>();
 	}
 	//
 	public T id(int id) {

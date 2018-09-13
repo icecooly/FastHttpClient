@@ -20,6 +20,7 @@ public abstract class OkHttpRequest {
 	protected int id;
 	protected String url;
 	protected Map<String, String> params;
+	protected Map<String, String> encodedParams;
 	protected Map<String, String> headers;
 	protected String body;
 	protected List<FileInfo> fileInfos;
@@ -32,8 +33,19 @@ public abstract class OkHttpRequest {
 			String body,
 			MultipartBody multipartBody,
 			int id) {
+		this(url, tag, params, null, headers, fileInfos, body, multipartBody, id);
+	}
+	//
+	protected OkHttpRequest(String url, Object tag, Map<String, String> params,
+			Map<String, String> encodedParams,
+			Map<String, String> headers,
+			List<FileInfo> fileInfos,
+			String body,
+			MultipartBody multipartBody,
+			int id) {
 		this.url = url;
 		this.params = params;
+		this.encodedParams=encodedParams;
 		this.headers = headers;
 		this.fileInfos=fileInfos;
 		this.body=body;

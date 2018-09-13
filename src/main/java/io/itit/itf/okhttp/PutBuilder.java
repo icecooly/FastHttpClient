@@ -59,6 +59,19 @@ public class PutBuilder extends OkHttpRequestBuilder<PutBuilder> {
 		return this;
 	}
 	
+	public PutBuilder addEncodedParams(String key, String val) {
+		encodedParams.put(key, val);
+		return this;
+	}
+	
+	public PutBuilder addEncodedParams(Map<String,String> paramMap) {
+		if(paramMap==null){
+			return this;
+		}
+		paramMap.forEach((k,v)->{encodedParams.put(k, v);});
+		return this;
+	}
+	
 	public PutBuilder body(String body) {
 		this.body = body;
 		return this;

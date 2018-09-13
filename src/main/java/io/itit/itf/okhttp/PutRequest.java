@@ -83,6 +83,9 @@ public class PutRequest extends OkHttpRequest {
 		if (params!= null) {
 			params.forEach((k,v)->builder.add(k,v));
 		}
+		if (encodedParams!= null) {
+			encodedParams.forEach((k,v)->builder.addEncoded(k,v));
+		}
 	}
 	//
 	private void addParams(MultipartBody.Builder builder) {

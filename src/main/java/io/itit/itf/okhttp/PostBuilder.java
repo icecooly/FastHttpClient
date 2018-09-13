@@ -33,6 +33,7 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 					url,
 					tag, 
 					params,
+					encodedParams,
 					headers,
 					fileInfos,
 					postBody,
@@ -56,6 +57,16 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 			return this;
 		}
 		paramMap.forEach((k,v)->{params.put(k, v);});
+		return this;
+	}
+	
+	public PostBuilder encodedParams(Map<String, String> params) {
+		this.encodedParams = params;
+		return this;
+	}
+
+	public PostBuilder addEncodedParams(String key, String val) {
+		encodedParams.put(key, val);
 		return this;
 	}
 	
