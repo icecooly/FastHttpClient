@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.itit.itf.okhttp.PostRequest.FileInfo;
 import okhttp3.MultipartBody;
@@ -40,34 +39,6 @@ public class PostBuilder extends OkHttpRequestBuilder<PostBuilder> {
 					multipartBody,
 					id).
 				build(httpClient);
-	}
-
-	public PostBuilder params(Map<String, String> params) {
-		this.params = params;
-		return this;
-	}
-
-	public PostBuilder addParams(String key, String val) {
-		params.put(key, val);
-		return this;
-	}
-	
-	public PostBuilder addParams(Map<String,String> paramMap) {
-		if(paramMap==null){
-			return this;
-		}
-		paramMap.forEach((k,v)->{params.put(k, v);});
-		return this;
-	}
-	
-	public PostBuilder encodedParams(Map<String, String> params) {
-		this.encodedParams = params;
-		return this;
-	}
-
-	public PostBuilder addEncodedParams(String key, String val) {
-		encodedParams.put(key, val);
-		return this;
 	}
 	
 	public PostBuilder body(String postBody) {

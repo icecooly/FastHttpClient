@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.itit.itf.okhttp.PostRequest.FileInfo;
 import okhttp3.MultipartBody;
@@ -39,37 +38,6 @@ public class PutBuilder extends OkHttpRequestBuilder<PutBuilder> {
 					multipartBody,
 					id).
 				build(httpClient);
-	}
-
-	public PutBuilder params(Map<String, String> params) {
-		this.params = params;
-		return this;
-	}
-
-	public PutBuilder addParams(String key, String val) {
-		params.put(key, val);
-		return this;
-	}
-	
-	public PutBuilder addParams(Map<String,String> paramMap) {
-		if(paramMap==null){
-			return this;
-		}
-		paramMap.forEach((k,v)->{params.put(k, v);});
-		return this;
-	}
-	
-	public PutBuilder addEncodedParams(String key, String val) {
-		encodedParams.put(key, val);
-		return this;
-	}
-	
-	public PutBuilder addEncodedParams(Map<String,String> paramMap) {
-		if(paramMap==null){
-			return this;
-		}
-		paramMap.forEach((k,v)->{encodedParams.put(k, v);});
-		return this;
 	}
 	
 	public PutBuilder body(String body) {
