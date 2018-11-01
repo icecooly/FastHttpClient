@@ -19,7 +19,6 @@ public class ClassUtils {
 	 * 
 	 * @param obj
 	 * @return
-	 * @throws Exception
 	 */
 	public static Map<String, String> objectToMap(Object obj){    
 		Map<String, String> map = new HashMap<String, String>();
@@ -65,9 +64,5 @@ public class ClassUtils {
 			}
 		}
 		return fields;
-	}
-	//
-	public static void main(String[] args) {
-		
 	}
 }
