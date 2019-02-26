@@ -1,5 +1,5 @@
 # FastHttpClient
-封装OkHttp3(jdk8或以上)
+封装OkHttp3
 
 - 支持多线程异步请求
 - 支持Http/Https协议
@@ -8,6 +8,7 @@
 - 支持Cookie持久化
 - 支持JSON、表单提交
 - 支持文件和图片上传/批量上传，支持同步/异步上传，支持进度提示
+- 支持文件流上传
 
 
 Download
