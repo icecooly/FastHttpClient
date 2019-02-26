@@ -1,15 +1,22 @@
 package io.itit.itf.okhttp;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 import io.itit.itf.okhttp.PostRequest.FileInfo;
 import io.itit.itf.okhttp.callback.Callback;
 import okhttp3.Headers;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.internal.Util;
+import okio.BufferedSink;
+import okio.Okio;
+import okio.Source;
 
 /**
  * 
@@ -86,4 +93,37 @@ public abstract class OkHttpRequest {
 		return id;
 	}
 
+	//
+	/** Returns a new request body that transmits the content of {@code file}. */
+	public static RequestBody createRequestBody(final MediaType contentType, final InputStream is) {
+		if (is == null)
+			throw new NullPointerException("is == null");
+
+		return new RequestBody() {
+			@Override
+			public MediaType contentType() {
+				return contentType;
+			}
+
+			@Override
+			public long contentLength() {
+				try {
+					return is.available();
+				} catch (IOException e) {
+					return 0;
+				}
+			}
+
+			@Override
+			public void writeTo(BufferedSink sink) throws IOException {
+				Source source = null;
+				try {
+					source = Okio.source(is);
+					sink.writeAll(source);
+				} finally {
+					Util.closeQuietly(source);
+				}
+			}
+		};
+	}
 }

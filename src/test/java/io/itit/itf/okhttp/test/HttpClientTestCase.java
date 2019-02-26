@@ -1,6 +1,7 @@
 package io.itit.itf.okhttp.test;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -131,16 +132,34 @@ public class HttpClientTestCase extends TestCase{
 	}
 	
 	/**
-	 * 上传文件
+	 * 上传文件(支持多个文件同时上传)
 	 * @throws Exception
 	 */
 	public void testUploadFile() throws Exception{
-		byte[] imageContent=FileUtil.getBytes("/tmp/cdz.jpg");
+		byte[] imageContent=FileUtil.getBytes("/tmp/logo.jpg");
 		Response response = FastHttpClient.newBuilder().
 				connectTimeout(10, TimeUnit.SECONDS).
 				build().
-				post().url("http://上传地址").
-				addFile("file", "cdz.jpg",imageContent).
+				post().
+				url("上传地址").
+				addFile("file", "logo.jpg",imageContent).
+				build().
+				execute();
+		logger.info(response.body().string());
+	}
+	
+	/**
+	 * 上传文件(通过文件流)
+	 * @throws Exception
+	 */
+	public void testUploadFileWithStream() throws Exception{
+		InputStream is=new FileInputStream("/tmp/logo.jpg");
+		Response response = FastHttpClient.newBuilder().
+				connectTimeout(10, TimeUnit.SECONDS).
+				build().
+				post().
+				url("上传地址").
+				addFile("file", "logo.jpg",is).
 				build().
 				execute();
 		logger.info(response.body().string());

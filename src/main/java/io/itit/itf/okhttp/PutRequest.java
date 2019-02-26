@@ -48,6 +48,8 @@ public class PutRequest extends OkHttpRequest {
 				RequestBody fileBody=null;
 				if(fileInfo.file!=null) {
 					fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),fileInfo.file);
+				}else if(fileInfo.fileInputStream!=null) {
+					fileBody = createRequestBody(MediaType.parse("application/octet-stream"),fileInfo.fileInputStream);
 				}else {
 					fileBody = RequestBody.create(MediaType.parse(getMimeType(fileInfo.fileName)),
 						fileInfo.fileContent);

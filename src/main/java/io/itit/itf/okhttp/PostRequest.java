@@ -1,6 +1,7 @@
 package io.itit.itf.okhttp;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -26,58 +27,52 @@ import okhttp3.RequestBody;
 public class PostRequest extends OkHttpRequest {
 	//
 	public static Logger logger = LoggerFactory.getLogger(PostRequest.class);
+
 	//
-	public PostRequest(String url,
-			Object tag,
-			Map<String, String> params, 
-			Map<String, String> headers,
-			List<FileInfo> fileInfos,
-			String postBody,
-			MultipartBody multipartBody,int id) {
-		super(url, tag,params,headers, fileInfos,postBody,multipartBody,id);
+	public PostRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers,
+			List<FileInfo> fileInfos, String postBody, MultipartBody multipartBody, int id) {
+		super(url, tag, params, headers, fileInfos, postBody, multipartBody, id);
 	}
-	
-	public PostRequest(String url,
-			Object tag,
-			Map<String, String> params, 
-			Map<String, String> encodeParams, 
-			Map<String, String> headers,
-			List<FileInfo> fileInfos,
-			String postBody,
-			MultipartBody multipartBody,int id) {
-		super(url, tag,params,encodeParams,headers, fileInfos,postBody,multipartBody,id);
+
+	//
+	public PostRequest(String url, Object tag, Map<String, String> params, Map<String, String> encodeParams,
+			Map<String, String> headers, List<FileInfo> fileInfos, String postBody, MultipartBody multipartBody,
+			int id) {
+		super(url, tag, params, encodeParams, headers, fileInfos, postBody, multipartBody, id);
 	}
 
 	@Override
 	protected RequestBody buildRequestBody() {
-		if(multipartBody!=null) {
+		if (multipartBody != null) {
 			return multipartBody;
-		}else if(fileInfos!=null && fileInfos.size()>0) {
+		} else if (fileInfos != null && fileInfos.size() > 0) {
 			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 			addParams(builder);
 			fileInfos.forEach(fileInfo -> {
-				RequestBody fileBody=null;
-				if(fileInfo.file!=null) {
-					fileBody = RequestBody.create(MediaType.parse("application/octet-stream"),fileInfo.file);
-				}else {
+				RequestBody fileBody = null;
+				if (fileInfo.file != null) {
+					fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), fileInfo.file);
+				} else if (fileInfo.fileInputStream != null) {
+					fileBody = createRequestBody(MediaType.parse("application/octet-stream"), fileInfo.fileInputStream);
+				} else {
 					fileBody = RequestBody.create(MediaType.parse(getMimeType(fileInfo.fileName)),
-						fileInfo.fileContent);
+							fileInfo.fileContent);
 				}
 				builder.addFormDataPart(fileInfo.partName, fileInfo.fileName, fileBody);
 			});
-			if(body!=null&&body.length()>0){
-				builder.addPart(RequestBody.create(MultipartBody.FORM,body));
+			if (body != null && body.length() > 0) {
+				builder.addPart(RequestBody.create(MultipartBody.FORM, body));
 			}
 			return builder.build();
-		}else if(body!=null&&body.length()>0){
-			MediaType mediaType=null;
-			if(headers.containsKey("Content-Type")){
+		} else if (body != null && body.length() > 0) {
+			MediaType mediaType = null;
+			if (headers.containsKey("Content-Type")) {
 				mediaType = MediaType.parse(headers.get("Content-Type"));
-			}else{
+			} else {
 				mediaType = MediaType.parse("text/plain;charset=utf-8");
 			}
-			return RequestBody.create(mediaType,body);
-		}else{
+			return RequestBody.create(mediaType, body);
+		} else {
 			FormBody.Builder builder = new FormBody.Builder();
 			addParams(builder);
 			FormBody formBody = builder.build();
@@ -91,29 +86,33 @@ public class PostRequest extends OkHttpRequest {
 	}
 
 	private void addParams(FormBody.Builder builder) {
-		if (params!= null) {
-			params.forEach((k,v)->builder.add(k,v));
+		if (params != null) {
+			params.forEach((k, v) -> builder.add(k, v));
 		}
-		if (encodedParams!=null) {
-			encodedParams.forEach((k,v)->builder.addEncoded(k,v));
+		if (encodedParams != null) {
+			encodedParams.forEach((k, v) -> builder.addEncoded(k, v));
 		}
 	}
+
 	//
 	private void addParams(MultipartBody.Builder builder) {
 		if (params != null && !params.isEmpty()) {
-			params.forEach((k,v)->{
+			params.forEach((k, v) -> {
 				builder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + k + "\""),
-						RequestBody.create(null,v));
+						RequestBody.create(null, v));
 			});
 		}
 	}
+
 	//
 	public static class FileInfo {
 		public String partName;
 		public String fileName;
 		public byte[] fileContent;
 		public File file;
+		public InputStream fileInputStream;
 	}
+
 	//
 	public static String getMimeType(String path) {
 		FileNameMap fileNameMap = URLConnection.getFileNameMap();
@@ -121,7 +120,7 @@ public class PostRequest extends OkHttpRequest {
 		try {
 			contentTypeFor = fileNameMap.getContentTypeFor(URLEncoder.encode(path, "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			logger.error(e.getMessage(),e);
+			logger.error(e.getMessage(), e);
 		}
 		if (contentTypeFor == null) {
 			contentTypeFor = "application/octet-stream";
