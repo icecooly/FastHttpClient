@@ -72,13 +72,29 @@ public class HttpClientTestCase extends TestCase{
 				string();
 		logger.info(html);
 	}
+	//
+	private static class ObjectParam{
+		public String wd;
+		public String tn;
+	}
+	public void testObjectParam() throws Exception{
+		ObjectParam param=new ObjectParam();
+		param.wd="微信机器人";
+		param.tn="baidu";
+		String resp=FastHttpClient.get().
+				url("http://www.baidu.com/s").
+				addParams(param).
+				build().
+				execute().string();
+		logger.info(resp);
+	}
 	
 	/**
 	 * 异步下载一张百度图片，有下载进度,保存为/tmp/tmp.jpg
 	 * @throws InterruptedException
 	 */
 	public void testDownloadFile() throws InterruptedException{
-		String savePath="/tmp/tmp.jpg";
+		String savePath="tmp.jpg";
 		String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
 		FastHttpClient.newBuilder().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
