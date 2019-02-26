@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.FastHttpClient;
+import io.itit.itf.okhttp.HttpClient;
 import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
@@ -17,6 +20,9 @@ import io.itit.itf.okhttp.interceptor.DownloadFileInterceptor;
 import io.itit.itf.okhttp.util.FileUtil;
 import junit.framework.TestCase;
 import okhttp3.Call;
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 
 /**
  * 
@@ -171,6 +177,36 @@ public class HttpClientTestCase extends TestCase{
 				build().
 				execute();
 		System.out.println(response.string());
+	}
+	//
+	private class LocalCookieJar implements CookieJar{
+	    List<Cookie> cookies;
+	    @Override
+	    public List<Cookie> loadForRequest(HttpUrl arg0) {
+	         if (cookies != null) {
+	                return cookies;
+	         }
+	         return new ArrayList<Cookie>();
+	    }
+	    @Override
+	    public void saveFromResponse(HttpUrl arg0, List<Cookie> cookies) {
+	        this.cookies = cookies;
+	    }
+	}
+	//自动携带Cookie进行请求
+	public void testCookie() throws Exception {
+		LocalCookieJar cookie=new LocalCookieJar();
+		HttpClient client=FastHttpClient.newBuilder()
+                .followRedirects(false) //禁制OkHttp的重定向操作，我们自己处理重定向
+                .followSslRedirects(false)
+                .cookieJar(cookie)   //为OkHttp设置自动携带Cookie的功能
+                .build();
+		String url="https://www.baidu.com/";
+		client.get().addHeader("Referer","https://www.baidu.com/").
+			url(url).
+			build().
+			execute();
+		System.out.println(cookie.cookies);
 	}
 	//
 	public void testXForwardedFor() throws Exception{
