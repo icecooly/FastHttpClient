@@ -19,7 +19,7 @@ Download Jar or grab via Maven:
 <dependency>
   <groupId>com.github.icecooly</groupId>
   <artifactId>FastHttpClient</artifactId>
-  <version>1.3</version>
+  <version>1.6</version>
 </dependency>
 ```
 or Gradle:

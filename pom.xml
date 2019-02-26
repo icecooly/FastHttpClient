@@ -5,7 +5,7 @@
 	<groupId>com.github.icecooly</groupId>
 	<artifactId>FastHttpClient</artifactId>
 	<packaging>jar</packaging>
-	<version>1.5</version>
+	<version>1.6</version>
 	<name>FastHttpClient</name>
 	<description>A Java library for okhttp3</description>
 	<url>https://github.com/icecooly/FastHttpClient</url>
