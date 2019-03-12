@@ -97,10 +97,10 @@ public class HttpClientTestCase extends TestCase{
 	}
 	
 	/**
-	 * 异步下载一张百度图片，有下载进度,保存为/tmp/tmp.jpg
+	 * 异步下载一张百度图片，有下载进度,保存为tmp.jpg
 	 * @throws InterruptedException
 	 */
-	public void testDownloadFile() throws InterruptedException{
+	public void testAsyncDownloadFile() throws InterruptedException{
 		String savePath="tmp.jpg";
 		String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
 		FastHttpClient.newBuilder().addNetworkInterceptor(new DownloadFileInterceptor(){
@@ -128,7 +128,18 @@ public class HttpClientTestCase extends TestCase{
 					logger.info("onSuccessWithInputStream");
 				}
 		});
-		Thread.sleep(3000);
+		Thread.sleep(5000);
+	}
+	
+	/**
+	 * 同步下载文件
+	 * @throws Exception
+	 */
+	public void testSyncDownloadFile() throws Exception{
+		String savePath="tmp.jpg";
+		String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
+		InputStream is=FastHttpClient.get().url(imageUrl).build().execute().byteStream();
+		FileUtil.saveContent(is, new File(savePath));
 	}
 	
 	/**
