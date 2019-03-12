@@ -80,6 +80,7 @@ public class HttpClientTestCase extends TestCase{
 		logger.info(html);
 	}
 	//
+	@SuppressWarnings("unused")
 	private static class ObjectParam{
 		public String wd;
 		public String tn;
