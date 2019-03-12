@@ -90,7 +90,17 @@ FastHttpClient.get().
 		});
 ```
 
-5.上传文件
+5.同步下载文件
+```java
+public void testSyncDownloadFile() throws Exception{
+	String savePath="tmp.jpg";
+	String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
+	InputStream is=FastHttpClient.get().url(imageUrl).build().execute().byteStream();
+	FileUtil.saveContent(is, new File(savePath));
+}
+```
+	
+6.上传文件
 ```java
 byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 		response = FastHttpClient.post().
@@ -102,7 +112,7 @@ byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 System.out.println(response.body().string());
 ```
 
-6.设置网络代理
+7.设置网络代理
 ```java
 Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
 Response response = FastHttpClient.
@@ -117,7 +127,7 @@ Response response = FastHttpClient.
 logger.info(response.string());
 ```
 
-7.设置Http头部信息
+8.设置Http头部信息
 ```java
 String url="https://www.baidu.com";
 Response response=FastHttpClient.
@@ -130,7 +140,7 @@ Response response=FastHttpClient.
 System.out.println(response.string());
 ```
 
-8.设置https证书
+9.设置https证书
 ```java
 SSLContext sslContext=getxxx();
 Response response=FastHttpClient.
