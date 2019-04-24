@@ -112,7 +112,21 @@ byte[] imageContent=FileUtil.getBytes("/tmp/test.png");
 System.out.println(response.body().string());
 ```
 
-7.设置网络代理
+7.上传文件(通过文件流)
+```java
+InputStream is=new FileInputStream("/tmp/logo.jpg");
+Response response = FastHttpClient.newBuilder().
+		connectTimeout(10, TimeUnit.SECONDS).
+		build().
+		post().
+		url("上传地址").
+		addFile("file", "logo.jpg",is).
+		build().
+		execute();
+logger.info(response.body().string());
+```
+
+8.设置网络代理
 ```java
 Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
 Response response = FastHttpClient.
@@ -127,7 +141,7 @@ Response response = FastHttpClient.
 logger.info(response.string());
 ```
 
-8.设置Http头部信息
+9.设置Http头部信息
 ```java
 String url="https://www.baidu.com";
 Response response=FastHttpClient.
