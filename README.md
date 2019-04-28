@@ -139,11 +139,10 @@ Authenticator.setDefault(new Authenticator(){//如果没有设置账号密码，
 	     });
 Response response = FastHttpClient.
 		newBuilder().
-		addNetworkInterceptor(logging).
 		proxy(proxy).
 		build().
 		get().
-		url("http://www.baidu.com").
+		url("http://ip111.cn/").
 		build().
 		execute();
 logger.info(response.string());
