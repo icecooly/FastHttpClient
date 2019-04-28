@@ -3,7 +3,9 @@ package io.itit.itf.okhttp.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
@@ -182,7 +184,15 @@ public class HttpClientTestCase extends TestCase{
 	 * @throws Exception
 	 */
 	public void testProxy() throws Exception{
-		Proxy proxy = new Proxy(Proxy.Type.SOCKS,new InetSocketAddress("1.1.1.1", 1088));
+		Proxy proxy = new Proxy(Proxy.Type.SOCKS,new InetSocketAddress("127.0.0.1", 1080));
+		Authenticator.setDefault(new Authenticator(){//如果没有设置账号密码，则可以注释掉这块
+	         private PasswordAuthentication authentication = 
+	         		new PasswordAuthentication("username","password".toCharArray());
+	         @Override
+	         protected PasswordAuthentication getPasswordAuthentication(){
+	             return authentication;
+	         }
+	     });
 		Response response = FastHttpClient.
 				newBuilder().
 				proxy(proxy).

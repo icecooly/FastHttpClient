@@ -129,6 +129,14 @@ logger.info(response.body().string());
 8.设置网络代理
 ```java
 Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress("127.0.0.1", 1088));
+Authenticator.setDefault(new Authenticator(){//如果没有设置账号密码，则可以注释掉这块
+	         private PasswordAuthentication authentication = 
+	         		new PasswordAuthentication("username","password".toCharArray());
+	         @Override
+	         protected PasswordAuthentication getPasswordAuthentication(){
+	             return authentication;
+	         }
+	     });
 Response response = FastHttpClient.
 		newBuilder().
 		addNetworkInterceptor(logging).
