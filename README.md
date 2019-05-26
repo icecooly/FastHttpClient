@@ -24,7 +24,7 @@ Download Jar or grab via Maven:
 ```
 or Gradle:
 ```groovy
-compile 'com.github.icecooly:FastHttpClient:1.6'
+compile 'com.github.icecooly:FastHttpClient:1.7'
 ```
 
 简单的例子
