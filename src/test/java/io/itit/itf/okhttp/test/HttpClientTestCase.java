@@ -26,6 +26,7 @@ import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 
 /**
  * 
@@ -267,6 +268,18 @@ public class HttpClientTestCase extends TestCase{
 		Response response=FastHttpClient.
 				put().
 				addHeader("X-Forwarded-For","234.45.124.12").
+				url(url).
+				build().
+				execute();
+		System.out.println(response.string());
+	}
+	//
+	public void testSetContentType() throws Exception{
+		String url="https://wx.qq.com";
+		Response response=FastHttpClient.
+				post().
+				addHeader("Content-Type","application/json").
+				body("{\"username\":\"test\",\"password\":\"111111\"}").
 				url(url).
 				build().
 				execute();
