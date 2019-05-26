@@ -26,7 +26,6 @@ import okhttp3.Call;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 
 /**
  * 
