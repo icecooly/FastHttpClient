@@ -67,4 +67,18 @@ public class FastHttpClient {
 	public static PutBuilder put() {
 		return httpClient.put();
 	}
+	//
+	/**
+	 * @return the httpClient
+	 */
+	public static HttpClient getHttpClient() {
+		return httpClient;
+	}
+	/**
+	 * @param httpClient the httpClient to set
+	 */
+	public static void setHttpClient(HttpClient httpClient) {
+		FastHttpClient.httpClient = httpClient;
+	}
+	
 }

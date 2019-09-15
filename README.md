@@ -216,3 +216,13 @@ Response response=FastHttpClient.
 		build().
 		execute();
 ```
+
+12.取消请求
+```java
+RequestCall call=FastHttpClient.get().
+				url("https://www.baidu.com").
+				build();
+Response response=call.execute();
+call.cancel();
+System.out.println(response.string());
+```

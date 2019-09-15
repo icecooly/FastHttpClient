@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.FastHttpClient;
 import io.itit.itf.okhttp.HttpClient;
+import io.itit.itf.okhttp.RequestCall;
 import io.itit.itf.okhttp.Response;
 import io.itit.itf.okhttp.callback.DownloadFileCallback;
 import io.itit.itf.okhttp.callback.StringCallback;
@@ -282,6 +283,19 @@ public class HttpClientTestCase extends TestCase{
 				url(url).
 				build().
 				execute();
+		System.out.println(response.string());
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testCacel() throws Exception{
+		RequestCall call=FastHttpClient.get().
+				url("https://www.baidu.com").
+				build();
+		Response response=call.execute();
+		call.cancel();
 		System.out.println(response.string());
 	}
 }
