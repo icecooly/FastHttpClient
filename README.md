@@ -63,31 +63,33 @@ String html = FastHttpClient.get().
 
 4.异步下载一张百度图片，有下载进度,保存为/tmp/tmp.jpg
 ```java
-String savePath="/tmp/tmp.jpg";
-FastHttpClient.get().
-		url("http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg").
-		build().addNetworkInterceptor(new DownloadFileInterceptor(){
+String savePath="tmp.jpg";
+String imageUrl="http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg";
+FastHttpClient.newBuilder().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
 			public void updateProgress(long downloadLenth, long totalLength, boolean isFinish) {
-				System.out.println("updateProgress downloadLenth:"+downloadLenth+
+				logger.info("updateProgress downloadLenth:"+downloadLenth+
 						",totalLength:"+totalLength+",isFinish:"+isFinish);
 			}
 		}).
-		executeAsync(new DownloadFileCallback(savePath) {
+		build().
+		get().
+		url(imageUrl).
+		build().
+		executeAsync(new DownloadFileCallback(savePath) {//save file to /tmp/tmp.jpg
 				@Override
 				public void onFailure(Call call, Exception e, int id) {
-					e.printStackTrace();
+					logger.error(e.getMessage(),e);
 				}
 				@Override
 				public void onSuccess(Call call, File file, int id) {
-					super.onSuccess(call, file, id);
-					System.out.println("filePath:"+file.getAbsolutePath());
+					logger.info("filePath:"+file.getAbsolutePath());
 				}
 				@Override
 				public void onSuccess(Call call, InputStream fileStream, int id) {
-					System.out.println("onSuccessWithInputStream");
+					logger.info("onSuccessWithInputStream");
 				}
-		});
+});
 ```
 
 5.同步下载文件
@@ -171,4 +173,46 @@ Response response=FastHttpClient.
 			build().
 			execute();
 System.out.println(response.string());
+```
+
+9.自动携带Cookie进行请求
+```java
+private class LocalCookieJar implements CookieJar{
+	    List<Cookie> cookies;
+	    @Override
+	    public List<Cookie> loadForRequest(HttpUrl arg0) {
+	         if (cookies != null) {
+	                return cookies;
+	         }
+	         return new ArrayList<Cookie>();
+	    }
+	    @Override
+	    public void saveFromResponse(HttpUrl arg0, List<Cookie> cookies) {
+	        this.cookies = cookies;
+	    }
+}
+LocalCookieJar cookie=new LocalCookieJar();
+HttpClient client=FastHttpClient.newBuilder()
+        .followRedirects(false) //禁制OkHttp的重定向操作，我们自己处理重定向
+        .followSslRedirects(false)
+        .cookieJar(cookie)   //为OkHttp设置自动携带Cookie的功能
+        .build();
+String url="https://www.baidu.com/";
+client.get().addHeader("Referer","https://www.baidu.com/").
+	url(url).
+	build().
+	execute();
+System.out.println(cookie.cookies);
+```
+
+10.设置Content-Type为application/json
+```java
+String url="https://wx.qq.com";
+Response response=FastHttpClient.
+		post().
+		addHeader("Content-Type","application/json").
+		body("{\"username\":\"test\",\"password\":\"111111\"}").
+		url(url).
+		build().
+		execute();
 ```
