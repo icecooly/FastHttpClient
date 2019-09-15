@@ -175,7 +175,7 @@ Response response=FastHttpClient.
 System.out.println(response.string());
 ```
 
-9.自动携带Cookie进行请求
+10.自动携带Cookie进行请求
 ```java
 private class LocalCookieJar implements CookieJar{
 	    List<Cookie> cookies;
@@ -205,7 +205,7 @@ client.get().addHeader("Referer","https://www.baidu.com/").
 System.out.println(cookie.cookies);
 ```
 
-10.设置Content-Type为application/json
+11.设置Content-Type为application/json
 ```java
 String url="https://wx.qq.com";
 Response response=FastHttpClient.
