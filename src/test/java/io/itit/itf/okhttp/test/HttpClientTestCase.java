@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -221,6 +223,18 @@ public class HttpClientTestCase extends TestCase{
 		System.out.println(response.string());
 	}
 	//
+	public void testSSLContext() throws Exception {
+		SSLContext sslContext=null;//TODO
+		String url="";
+		Response response=FastHttpClient.newBuilder().
+				sslContext(sslContext).build().
+					get().
+					url(url).
+					build().
+					execute();
+		System.out.println(response.string());
+	}
+	//
 	private class LocalCookieJar implements CookieJar{
 	    List<Cookie> cookies;
 	    @Override
@@ -290,7 +304,7 @@ public class HttpClientTestCase extends TestCase{
 	 * 
 	 * @throws Exception
 	 */
-	public void testCacel() throws Exception{
+	public void testCancel() throws Exception{
 		RequestCall call=FastHttpClient.get().
 				url("https://www.baidu.com").
 				build();
