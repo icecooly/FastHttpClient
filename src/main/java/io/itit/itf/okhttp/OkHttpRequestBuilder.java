@@ -19,7 +19,7 @@ public abstract class OkHttpRequestBuilder<T extends OkHttpRequestBuilder> {
 	protected Map<String, String> headers;
 	protected Map<String, String> params;
 	protected Map<String, String> encodedParams;
-	protected int id;
+	protected String id;
 	//
 	public OkHttpRequestBuilder(OkHttpClient httpClient){
 		this.httpClient=httpClient;
@@ -28,7 +28,7 @@ public abstract class OkHttpRequestBuilder<T extends OkHttpRequestBuilder> {
 		encodedParams=new LinkedHashMap<>();
 	}
 	//
-	public T id(int id) {
+	public T id(String id) {
 		this.id = id;
 		return (T) this;
 	}

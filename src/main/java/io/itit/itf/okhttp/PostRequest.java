@@ -30,14 +30,14 @@ public class PostRequest extends OkHttpRequest {
 
 	//
 	public PostRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers,
-			List<FileInfo> fileInfos, String postBody, MultipartBody multipartBody, int id) {
+			List<FileInfo> fileInfos, String postBody, MultipartBody multipartBody, String id) {
 		super(url, tag, params, headers, fileInfos, postBody, multipartBody, id);
 	}
 
 	//
 	public PostRequest(String url, Object tag, Map<String, String> params, Map<String, String> encodeParams,
 			Map<String, String> headers, List<FileInfo> fileInfos, String postBody, MultipartBody multipartBody,
-			int id) {
+			String id) {
 		super(url, tag, params, encodeParams, headers, fileInfos, postBody, multipartBody, id);
 	}
 

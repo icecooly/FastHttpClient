@@ -33,7 +33,8 @@ public class PutRequest extends OkHttpRequest {
 			Map<String, String> headers,
 			List<FileInfo> fileInfos,
 			String body,
-			MultipartBody multipartBody,int id) {
+			MultipartBody multipartBody,
+			String id) {
 		super(url, tag,params,headers, fileInfos,body,multipartBody,id);
 	}
 

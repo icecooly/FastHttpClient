@@ -226,3 +226,13 @@ Response response=call.execute();
 call.cancel();
 System.out.println(response.string());
 ```
+
+13.取消所有请求
+```java
+FastHttpClient.cancelAll();
+```
+
+14.按照TAG取消请求
+```java
+FastHttpClient.cancel(tag);
+```

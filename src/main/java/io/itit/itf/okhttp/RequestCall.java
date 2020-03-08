@@ -57,7 +57,7 @@ public class RequestCall {
 
 	private void execute(final RequestCall requestCall, Callback callback) {
 		final Callback finalCallback = callback;
-		final int id = requestCall.getOkHttpRequest().getId();
+		final String id = requestCall.getOkHttpRequest().getId();
 		requestCall.getCall().enqueue(new okhttp3.Callback() {
 			@Override
 			public void onFailure(Call call, final IOException e) {

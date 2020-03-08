@@ -59,11 +59,11 @@ public class HttpClientTestCase extends TestCase{
 		FastHttpClient.get().url("https://www.baidu.com").build().
 		executeAsync(new StringCallback() {
 			@Override
-			public void onFailure(Call call, Exception e, int id) {
+			public void onFailure(Call call, Exception e, String id) {
 				logger.error(e.getMessage(),e);
 			}
 			@Override
-			public void onSuccess(Call call, String response, int id) {
+			public void onSuccess(Call call, String response, String id) {
 				logger.info("response:{}",response);
 			}
 		});
@@ -112,29 +112,39 @@ public class HttpClientTestCase extends TestCase{
 		FastHttpClient.newBuilder().addNetworkInterceptor(new DownloadFileInterceptor(){
 			@Override
 			public void updateProgress(long downloadLenth, long totalLength, boolean isFinish) {
+				int percent=0;
+				if(totalLength>0) {
+					percent=(int) (downloadLenth*100/totalLength);
+				}
 				logger.info("updateProgress downloadLenth:"+downloadLenth+
-						",totalLength:"+totalLength+",isFinish:"+isFinish);
+						" totalLength:"+totalLength+" percent:"+percent+"% isFinish:"+isFinish);
 			}
 		}).
+		connectTimeout(0, TimeUnit.SECONDS).
+		readTimeout(0, TimeUnit.SECONDS).
+		writeTimeout(0, TimeUnit.SECONDS).
 		build().
 		get().
+		id("1000").
+		tag("download big file").
 		url(imageUrl).
 		build().
 		executeAsync(new DownloadFileCallback(savePath) {//save file to /tmp/tmp.jpg
 				@Override
-				public void onFailure(Call call, Exception e, int id) {
+				public void onFailure(Call call, Exception e, String id) {
+					logger.error("onFailure id:{}",id);
 					logger.error(e.getMessage(),e);
 				}
 				@Override
-				public void onSuccess(Call call, File file, int id) {
-					logger.info("filePath:"+file.getAbsolutePath());
+				public void onSuccess(Call call, File file, String id) {
+					logger.info("filePath:"+file.getAbsolutePath()+",id:{}",id);
 				}
 				@Override
-				public void onSuccess(Call call, InputStream fileStream, int id) {
-					logger.info("onSuccessWithInputStream");
+				public void onSuccess(Call call, InputStream fileStream, String id) {
+					logger.info("onSuccessWithInputStream id:{}",id);
 				}
 		});
-		Thread.sleep(5000);
+		Thread.sleep(50000000);
 	}
 	
 	/**
@@ -311,5 +321,47 @@ public class HttpClientTestCase extends TestCase{
 		Response response=call.execute();
 		call.cancel();
 		System.out.println(response.string());
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testCancelByTag() throws Exception{
+		String tag="baidu";
+		RequestCall call=FastHttpClient.get().
+				url("https://www.baidu.com").
+				tag(tag).
+				build();
+		call.executeAsync(new StringCallback() {
+			@Override
+			public void onSuccess(Call call, String response,String id) {
+				logger.info("onSuccess response:{} id:{} ",response,id);
+			}
+		});
+		FastHttpClient.cancel(tag);
+		Thread.sleep(5000);
+	}
+	
+	/**
+	 * 
+	 * @throws Exception
+	 */
+	public void testCancelAll() throws Exception{
+		for(int i=1;i<=10;i++) {
+			String tag="baidu"+i;
+			RequestCall call=FastHttpClient.get().
+					url("https://www.baidu.com").
+					tag(tag).
+					build();
+			call.executeAsync(new StringCallback() {
+				@Override
+				public void onSuccess(Call call, String response, String id) {
+					logger.info("onSuccess response:{} id:{} ",response,id);
+				}
+			});
+		}
+		FastHttpClient.cancelAll();
+		Thread.sleep(5000);
 	}
 }

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.itit.itf.okhttp.ssl.X509TrustManagerImpl;
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 
 /**
@@ -80,5 +81,49 @@ public class FastHttpClient {
 	public static void setHttpClient(HttpClient httpClient) {
 		FastHttpClient.httpClient = httpClient;
 	}
-	
+	/**
+	 * 
+	 */
+	public static void cancelAll() {
+		cancelAll(httpClient.getOkHttpClient());
+	}
+	/**
+	 * 
+	 * @param okHttpClient
+	 */
+	public static void cancelAll(final OkHttpClient okHttpClient) {
+		if (okHttpClient != null) {
+			for (Call call : okHttpClient.dispatcher().queuedCalls()) {
+				call.cancel();
+		    }
+		    for (Call call : okHttpClient.dispatcher().runningCalls()) {
+		        call.cancel();
+		    }
+		}
+	}
+	/**
+	 * 
+	 * @param tag
+	 */
+	public static void cancel(final Object tag) {
+		cancel(httpClient.getOkHttpClient(), tag);
+	}
+	/**
+	 * 
+	 * @param tag
+	 */
+	public static void cancel(final OkHttpClient okHttpClient,final Object tag) {
+		if (okHttpClient != null && tag!=null) {
+			for (Call call : okHttpClient.dispatcher().queuedCalls()) {
+		        if (tag.equals(call.request().tag())) {
+		            call.cancel();
+		        }
+		    }
+		    for (Call call : okHttpClient.dispatcher().runningCalls()) {
+		        if (tag.equals(call.request().tag())) {
+		            call.cancel();
+		        }
+		    }
+		}
+	}
 }

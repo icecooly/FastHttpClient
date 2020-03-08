@@ -30,7 +30,7 @@ public abstract class DownloadFileCallback extends Callback{
 	}
 	//
 	@Override
-	public void onResponse(Call call, Response response, int id) {
+	public void onResponse(Call call, Response response, String id) {
 		try {
 			if(fileAbsolutePath!=null&&fileAbsolutePath.length()>0){
 				File file=new File(fileAbsolutePath);
@@ -44,11 +44,11 @@ public abstract class DownloadFileCallback extends Callback{
 		}
 	}
 	//
-	public void onSuccess(Call call,File file, int id) {
+	public void onSuccess(Call call,File file, String id) {
 		
 	}
 	//
-	public void onSuccess(Call call,InputStream fileStream, int id) {
+	public void onSuccess(Call call,InputStream fileStream, String id) {
 		
 	}
 }

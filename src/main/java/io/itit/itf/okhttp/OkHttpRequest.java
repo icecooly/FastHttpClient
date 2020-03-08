@@ -24,7 +24,7 @@ import okio.Source;
  *
  */
 public abstract class OkHttpRequest {
-	protected int id;
+	protected String id;
 	protected String url;
 	protected Map<String, String> params;
 	protected Map<String, String> encodedParams;
@@ -39,7 +39,7 @@ public abstract class OkHttpRequest {
 			List<FileInfo> fileInfos,
 			String body,
 			MultipartBody multipartBody,
-			int id) {
+			String id) {
 		this(url, tag, params, null, headers, fileInfos, body, multipartBody, id);
 	}
 	//
@@ -49,7 +49,7 @@ public abstract class OkHttpRequest {
 			List<FileInfo> fileInfos,
 			String body,
 			MultipartBody multipartBody,
-			int id) {
+			String id) {
 		this.url = url;
 		this.params = params;
 		this.encodedParams=encodedParams;
@@ -89,7 +89,7 @@ public abstract class OkHttpRequest {
 		builder.headers(headerBuilder.build());
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
