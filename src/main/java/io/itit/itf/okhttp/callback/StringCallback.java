@@ -25,7 +25,10 @@ public abstract class StringCallback extends Callback{
 			logger.error(e.getMessage(),e);
 		}
 	}
-	//
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void onFailure(Call call,Exception e,String id) {
 		logger.error("onFailure id:{}",id);
@@ -37,7 +40,6 @@ public abstract class StringCallback extends Callback{
 	 * @param call
 	 * @param response
 	 * @param id
-	 * @param tag
 	 */
 	public abstract void onSuccess(Call call,String response,String id);
 }
